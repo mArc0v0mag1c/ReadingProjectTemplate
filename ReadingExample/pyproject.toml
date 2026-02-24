@@ -1,0 +1,18 @@
+[project]
+name = "readingexample"
+version = "0.1.0"
+description = "Academic reading project: ReadingExample"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    # Packages installed automatically during setup:
+    # - PDF processing: pypdf, pdf2image, pillow
+    # - Mistral OCR: mistralai, python-dotenv
+    # - Zotero: zotero-mcp-server
+    #
+    # Add more as needed: uv add <package>
+]
+
+[tool.uv.sources]
+# Uncomment and configure as needed:
+# zotero-mcp-server = { git = "https://github.com/54yyyu/zotero-mcp.git" }
