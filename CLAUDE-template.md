@@ -5,15 +5,17 @@
 
 1. **`READING-LOG.md`** — Read FIRST. What's been read, current readings, notes locations, up-next queue.
 2. **This file (`CLAUDE.md`)** — Project structure, note-taking conventions.
-3. **`Notes/STYLE-GUIDE.md`** — LaTeX note-writing workflow and formatting rules.
-4. **`.claude/skills/`** — Available skills (mistral-pdf-to-markdown, zotero-paper-reader).
-5. **`.claude/agents/`** — Specialized agents (note-checker).
+3. **`Extracted/`** — Read the relevant extracted markdown before discussing any paper.
+4. **`QuickNotes/`** — Check for existing discussion notes; update or create new ones during discussion.
+5. **`Notes/STYLE-GUIDE.md`** — LaTeX note-writing workflow and formatting rules.
+6. **`.claude/skills/`** — Available skills (mistral-pdf-to-markdown, zotero-paper-reader).
+7. **`.claude/agents/`** — Specialized agents (note-checker).
 
 ## Working Directory Context
 
 You are working in the `ReadingExample/` folder, which is a Git repository for academic reading and note-taking.
 
-- Git-tracked folders: `Notes/`, `Extracted/`
+- Git-tracked folders: `Notes/`, `Extracted/`, `QuickNotes/`
 - Gitignored folders: `Literature/` (PDFs), `Output/` (compiled notes) — optionally synced via cloud storage (e.g., Dropbox, Google Drive)
 - `.env` — API keys (gitignored)
 
@@ -26,6 +28,7 @@ ReadingExample/
 │   ├── references.bib
 │   └── <reading>/   - One folder per paper/chapter (multiple .tex files allowed)
 ├── Extracted/       - PDF-to-markdown conversions (git-tracked)
+├── QuickNotes/      - Lightweight discussion notes per paper (git-tracked)
 ├── Literature/        - PDF files (gitignored, optionally cloud-synced)
 ├── Output/          - Compiled PDF notes (gitignored, optionally cloud-synced)
 ├── READING-LOG.md   - Reading tracker (Claude reads this first)
@@ -43,6 +46,32 @@ ReadingExample/
 - Starting a new reading (add to Currently Reading)
 - Finishing a reading (move to Completed with a one-liner takeaway)
 - Discovering related papers to read later (add to Up Next)
+
+## Quick Notes
+
+`QuickNotes/<paper-name>.md` — lightweight companion notes captured during discussion. These track key insights, logic chains, and brainstorms as you read. When you later write formal LaTeX notes, refer to these as source material.
+
+Each file follows this structure:
+
+```markdown
+# Author (Year) — Title: Companion Notes
+
+## 1. Short descriptive title
+
+**Reference:** where in the paper (e.g., Abstract (p. 529); Section I (pp. 530–532))
+
+Key quote or claim, then the unpacked logic chain or analysis with precise citations (page, paragraph).
+
+## 2. Next topic
+
+Same pattern. Each numbered section is one self-contained insight, argument, or brainstorm.
+```
+
+Guidelines:
+- One file per paper, append new sections as discussion continues
+- Each section needs a **Reference** line pointing to the paper
+- Logic chains should be numbered steps with citations
+- Brainstorms and cross-paper connections are welcome — label them clearly
 
 ## Reading Notes
 

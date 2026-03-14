@@ -100,7 +100,7 @@ mkdir -p "$PROJECT_NAME"
 cd "$PROJECT_NAME"
 
 echo "Creating project directories..."
-mkdir -p Notes Extracted Literature Output
+mkdir -p Notes Extracted Literature Output QuickNotes
 
 # Copy Notes/STYLE-GUIDE.md
 if [ -f "$SCRIPT_DIR/ReadingExample/Notes/STYLE-GUIDE.md" ]; then
@@ -374,6 +374,7 @@ else
     echo "    ├── Literature/              - PDFs (gitignored, local)"
     echo "    ├── Output/                - Compiled PDF notes (gitignored, local)"
 fi
+echo "    ├── QuickNotes/            - Lightweight discussion notes (git-tracked)"
 echo "    ├── READING-LOG.md         - Reading tracker"
 echo "    ├── CLAUDE.md              - AI instructions"
 echo "    ├── .env                   - API keys (gitignored)"
