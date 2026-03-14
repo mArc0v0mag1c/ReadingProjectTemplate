@@ -4,7 +4,7 @@ Get PDF file from Zotero library - tries local first, then downloads from web if
 
 This script first attempts to locate the PDF in local Zotero storage.
 If not found locally, it downloads from the Zotero web library using the API.
-Downloaded PDFs are saved to the Readings/ directory.
+Downloaded PDFs are saved to the Literature/ directory.
 """
 
 import sys
@@ -135,7 +135,7 @@ def get_original_filename(attachment_key):
 
 def download_pdf(attachment_key):
     """
-    Download PDF from Zotero web library to Readings/ directory.
+    Download PDF from Zotero web library to Literature/ directory.
 
     Args:
         attachment_key: The attachment item key
@@ -158,8 +158,8 @@ def download_pdf(attachment_key):
         original_filename = f"{attachment_key}.pdf"
         print(f"Warning: Could not get original filename, using {original_filename}", file=sys.stderr)
 
-    # Save to Readings/ directory
-    readings_dir = Path("Readings")
+    # Save to Literature/ directory
+    readings_dir = Path("Literature")
     readings_dir.mkdir(exist_ok=True)
     output_path = readings_dir / original_filename
 
@@ -198,26 +198,26 @@ def download_pdf(attachment_key):
 
 def get_pdf(attachment_key):
     """
-    Get PDF file - tries local first, downloads to Readings/ if needed.
+    Get PDF file - tries local first, downloads to Literature/ if needed.
 
     Args:
         attachment_key: The attachment item key
 
     Returns:
-        Path to PDF file in Readings/
+        Path to PDF file in Literature/
     """
     # First, try to find locally
     local_path = find_local_pdf(attachment_key)
     if local_path:
-        # Copy local PDF to Readings/ for consistency
-        readings_dir = Path("Readings")
+        # Copy local PDF to Literature/ for consistency
+        readings_dir = Path("Literature")
         readings_dir.mkdir(exist_ok=True)
         dest = readings_dir / Path(local_path).name
         if not dest.exists():
             shutil.copy2(local_path, dest)
             print(f"Copied local PDF to: {dest}")
         else:
-            print(f"PDF already in Readings/: {dest}")
+            print(f"PDF already in Literature/: {dest}")
         return str(dest)
 
     # If not found locally, download from web

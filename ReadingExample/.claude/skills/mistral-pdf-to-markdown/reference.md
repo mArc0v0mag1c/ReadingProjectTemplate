@@ -57,7 +57,7 @@ from convert_pdf_to_markdown import (
 api_key = load_api_key()
 
 # Extract pages
-base64_pdf = extract_pages("Readings/paper.pdf", page_selection="1-5")
+base64_pdf = extract_pages("Literature/paper.pdf", page_selection="1-5")
 
 # Process with Mistral
 ocr_response = process_with_mistral(api_key, base64_pdf)
@@ -74,7 +74,7 @@ from pathlib import Path
 import subprocess
 
 # Process multiple PDFs
-pdf_dir = Path("Readings")
+pdf_dir = Path("Literature")
 output_dir = Path("Extracted")
 
 for pdf_file in pdf_dir.glob("*.pdf"):

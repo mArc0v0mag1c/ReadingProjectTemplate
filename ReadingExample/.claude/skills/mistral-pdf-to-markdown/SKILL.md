@@ -48,7 +48,7 @@ import subprocess
 result = subprocess.run([
     "python",
     ".claude/skills/mistral-pdf-to-markdown/scripts/convert_pdf_to_markdown.py",
-    "Readings/paper.pdf",
+    "Literature/paper.pdf",
     "Extracted/Paper_Name.md",
     "--pages", "1-10"
 ], capture_output=True, text=True)
@@ -75,7 +75,7 @@ The script requires:
 ### Convert Research Paper
 ```bash
 python scripts/convert_pdf_to_markdown.py \
-  "Readings/research_paper.pdf" \
+  "Literature/research_paper.pdf" \
   "Extracted/Author_Year_Title.md"
 ```
 
@@ -83,7 +83,7 @@ python scripts/convert_pdf_to_markdown.py \
 ```bash
 # Extract pages 10-20 (introduction and methods)
 python scripts/convert_pdf_to_markdown.py \
-  "Readings/paper.pdf" \
+  "Literature/paper.pdf" \
   "Extracted/paper_intro.md" \
   --pages "10-20"
 ```

@@ -14,7 +14,7 @@
 You are working in the `ReadingExample/` folder, which is a Git repository for academic reading and note-taking.
 
 - Git-tracked folders: `Notes/`, `Extracted/`
-- Gitignored folders: `Readings/` (PDFs), `Output/` (compiled notes) — optionally synced via cloud storage (e.g., Dropbox, Google Drive)
+- Gitignored folders: `Literature/` (PDFs), `Output/` (compiled notes) — optionally synced via cloud storage (e.g., Dropbox, Google Drive)
 - `.env` — API keys (gitignored)
 
 ## Project Structure
@@ -26,7 +26,7 @@ ReadingExample/
 │   ├── references.bib
 │   └── <reading>/   - One folder per paper/chapter (multiple .tex files allowed)
 ├── Extracted/       - PDF-to-markdown conversions (git-tracked)
-├── Readings/        - PDF files (gitignored, optionally cloud-synced)
+├── Literature/        - PDF files (gitignored, optionally cloud-synced)
 ├── Output/          - Compiled PDF notes (gitignored, optionally cloud-synced)
 ├── READING-LOG.md   - Reading tracker (Claude reads this first)
 └── .env             - API keys (gitignored)
@@ -52,7 +52,7 @@ Each folder can have multiple `.tex` files (e.g., `main.tex`, `chapter3.tex`, `p
 
 ### Workflow
 
-1. Place PDF in `Readings/` (manually or via Zotero skill)
+1. Place PDF in `Literature/` (manually or via Zotero skill)
 2. Extract PDF to markdown: use `mistral-pdf-to-markdown` skill → saves to `Extracted/`
 3. Read the extracted markdown; identify key passages
 4. Create `Notes/<reading-name>/main.tex` for structured LaTeX notes

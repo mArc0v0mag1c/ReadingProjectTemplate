@@ -73,7 +73,7 @@ Thumbs.db
 desktop.ini
 
 # Project specific (gitignored dirs — optionally cloud-synced)
-Readings
+Literature
 Output
 sync/
 uv.lock

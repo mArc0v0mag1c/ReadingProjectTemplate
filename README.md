@@ -18,7 +18,7 @@ This creates a ready-to-go project at `MacroTheory/` with everything set up.
 ./create_project.sh --drive ~/Dropbox/Reading MacroTheory
 ```
 
-This puts `Readings/` (PDFs) and `Output/` (compiled notes) in Dropbox, symlinked into the project.
+This puts `Literature/` (PDFs) and `Output/` (compiled notes) in Dropbox, symlinked into the project.
 
 ## What You Get
 
@@ -29,7 +29,7 @@ MacroTheory/
 │   ├── references.bib  Shared bibliography
 │   └── <reading>/      One folder per paper/chapter, multiple .tex files
 ├── Extracted/          PDF-to-markdown conversions (git-tracked)
-├── Readings/           PDFs (gitignored, optionally cloud-synced)
+├── Literature/           PDFs (gitignored, optionally cloud-synced)
 ├── Output/             Compiled PDF notes (gitignored, optionally cloud-synced)
 ├── READING-LOG.md      Tracks what you've read, notes locations, up-next queue
 ├── CLAUDE.md           AI instructions for Claude
@@ -39,7 +39,7 @@ MacroTheory/
 
 ## Workflow
 
-1. **Place a PDF** in `Readings/` (manually or via Zotero skill)
+1. **Place a PDF** in `Literature/` (manually or via Zotero skill)
 2. **Extract to markdown** using the `mistral-pdf-to-markdown` skill → saves to `Extracted/`
 3. **Write LaTeX notes** in `Notes/<reading-name>/` using `marcoreport.sty`
 4. **Update `READING-LOG.md`** so Claude knows your reading history
@@ -63,7 +63,7 @@ After creating a project, fill in `.env`:
 | Tool | What it does |
 |------|-------------|
 | `mistral-pdf-to-markdown` | Converts PDFs to markdown via Mistral OCR API |
-| `zotero-paper-reader` | Fetches papers from Zotero, downloads to `Readings/`, converts to markdown |
+| `zotero-paper-reader` | Fetches papers from Zotero, downloads to `Literature/`, converts to markdown |
 | `note-checker` agent | Validates your LaTeX notes against extracted source material |
 
 ## Design Principles

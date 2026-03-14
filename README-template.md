@@ -11,7 +11,7 @@ ReadingExample/
 │   ├── references.bib
 │   └── <reading>/   - One folder per paper/chapter
 ├── Extracted/       - PDF-to-markdown conversions (git-tracked)
-├── Readings/        - PDF files (gitignored)
+├── Literature/        - PDF files (gitignored)
 ├── Output/          - Compiled PDF notes (gitignored)
 ├── READING-LOG.md   - Reading tracker
 └── .env             - API keys (gitignored)
@@ -49,4 +49,4 @@ Fill in your API keys in `.env`:
 After setup, you should have:
 - Python environment ready with `uv sync`
 - Local `Notes/` and `Extracted/` folders in the repository
-- `Readings/` and `Output/` directories for PDFs and compiled notes
+- `Literature/` and `Output/` directories for PDFs and compiled notes

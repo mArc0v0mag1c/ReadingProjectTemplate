@@ -67,9 +67,9 @@ fi
 DRIVE_PATH=""
 if [ -n "$DRIVE_PATH" ]; then
     echo "Setting up cloud storage symlinks..."
-    mkdir -p "$DRIVE_PATH/Readings" "$DRIVE_PATH/Output"
+    mkdir -p "$DRIVE_PATH/Literature" "$DRIVE_PATH/Output"
 
-    for folder_name in Readings Output; do
+    for folder_name in Literature Output; do
         if [ -d "./$folder_name" ] && [ ! -L "./$folder_name" ]; then
             rmdir "./$folder_name" 2>/dev/null || true
         fi

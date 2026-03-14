@@ -1,6 +1,6 @@
 ---
 name: zotero-paper-reader
-description: Read and analyze academic papers from Zotero library. Use when the user requests to read, access, or analyze a paper by title, author, or topic from their Zotero library. Automatically searches Zotero, downloads PDFs to Readings/, converts to markdown in Extracted/, and provides analysis.
+description: Read and analyze academic papers from Zotero library. Use when the user requests to read, access, or analyze a paper by title, author, or topic from their Zotero library. Automatically searches Zotero, downloads PDFs to Literature/, converts to markdown in Extracted/, and provides analysis.
 ---
 
 # Zotero Paper Reader
@@ -44,7 +44,7 @@ Look for the attachment with `type: application/pdf` and note its `Key` (attachm
 
 ### Step 3: Get PDF File (Local or Download)
 
-Use the bundled script to get the PDF - it automatically tries local storage first, then downloads to `Readings/`:
+Use the bundled script to get the PDF - it automatically tries local storage first, then downloads to `Literature/`:
 
 ```bash
 uv run python .claude/skills/zotero-paper-reader/scripts/get_zotero_pdf.py ATTACHMENT_KEY
@@ -52,8 +52,8 @@ uv run python .claude/skills/zotero-paper-reader/scripts/get_zotero_pdf.py ATTAC
 
 The script workflow:
 1. First searches local Zotero storage (`~/Zotero/storage/ATTACHMENT_KEY/`)
-2. If found locally, copies to `Readings/`
-3. If not found locally, downloads from Zotero web library to `Readings/`
+2. If found locally, copies to `Literature/`
+3. If not found locally, downloads from Zotero web library to `Literature/`
 
 **Security note:** The Zotero API key and library configuration are read directly from `.env` by the Python script and never exposed to the LLM. Required environment variables: `ZOTERO_API_KEY`, `ZOTERO_LIBRARY_TYPE`, `ZOTERO_LIBRARY_ID`.
 
@@ -63,7 +63,7 @@ Use the `mistral-pdf-to-markdown` skill to convert the PDF:
 
 ```bash
 uv run python .claude/skills/mistral-pdf-to-markdown/scripts/convert_pdf_to_markdown.py \
-  "Readings/FILENAME.pdf" \
+  "Literature/FILENAME.pdf" \
   "Extracted/Author_Year_Title.md"
 ```
 
@@ -100,8 +100,8 @@ Provide the user with:
 1. Search: `mcp__zotero__zotero_search_items(query="Are Intermediary Constraints Priced")`
 2. Get attachment: `mcp__zotero__zotero_get_item_children(item_key="KPRQ2DLZ")`
 3. Get PDF: `uv run python .claude/skills/zotero-paper-reader/scripts/get_zotero_pdf.py 2HSELEHX`
-   - Downloads to `Readings/Du_et_al_2023_Are_Intermediary_Constraints_Priced.pdf`
-4. Convert: `uv run python .claude/skills/mistral-pdf-to-markdown/scripts/convert_pdf_to_markdown.py Readings/Du_et_al_2023_Are_Intermediary_Constraints_Priced.pdf Extracted/Du_et_al_2023_Are_Intermediary_Constraints_Priced.md`
+   - Downloads to `Literature/Du_et_al_2023_Are_Intermediary_Constraints_Priced.pdf`
+4. Convert: `uv run python .claude/skills/mistral-pdf-to-markdown/scripts/convert_pdf_to_markdown.py Literature/Du_et_al_2023_Are_Intermediary_Constraints_Priced.pdf Extracted/Du_et_al_2023_Are_Intermediary_Constraints_Priced.md`
 5. Read: `Read(file_path="Extracted/Du_et_al_2023_Are_Intermediary_Constraints_Priced.md", limit=500)`
 6. Summarize and offer to dive deeper into specific sections
 

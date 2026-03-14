@@ -5,7 +5,7 @@
 #
 # Usage:
 #   ./create_project.sh <project-name>                           # Local project
-#   ./create_project.sh --drive <cloud-path> <project-name>      # Readings & Output in cloud storage
+#   ./create_project.sh --drive <cloud-path> <project-name>      # Literature & Output in cloud storage
 
 set -e  # Exit on any error
 
@@ -27,10 +27,10 @@ while [[ $# -gt 0 ]]; do
         -h|--help)
             echo "Usage:"
             echo "  $0 <project-name>                           # Local project"
-            echo "  $0 --drive <cloud-path> <project-name>      # Readings & Output in cloud storage"
+            echo "  $0 --drive <cloud-path> <project-name>      # Literature & Output in cloud storage"
             echo ""
             echo "Options:"
-            echo "  --drive       Cloud storage path for Readings/ and Output/ (e.g., Google Drive, Dropbox)"
+            echo "  --drive       Cloud storage path for Literature/ and Output/ (e.g., Google Drive, Dropbox)"
             echo "  -h, --help    Show this help message"
             echo ""
             echo "Examples:"
@@ -100,7 +100,7 @@ mkdir -p "$PROJECT_NAME"
 cd "$PROJECT_NAME"
 
 echo "Creating project directories..."
-mkdir -p Notes Extracted Readings Output
+mkdir -p Notes Extracted Literature Output
 
 # Copy Notes/STYLE-GUIDE.md
 if [ -f "$SCRIPT_DIR/ReadingExample/Notes/STYLE-GUIDE.md" ]; then
@@ -304,10 +304,10 @@ if [ -n "$DRIVE_PATH" ]; then
     echo "Setting up cloud storage symlinks..."
 
     # Create cloud directories
-    mkdir -p "$DRIVE_ABS_PATH/Readings" "$DRIVE_ABS_PATH/Output"
+    mkdir -p "$DRIVE_ABS_PATH/Literature" "$DRIVE_ABS_PATH/Output"
 
     # Replace local dirs with symlinks
-    for folder_name in Readings Output; do
+    for folder_name in Literature Output; do
         if [ -d "./$folder_name" ] && [ ! -L "./$folder_name" ]; then
             rmdir "./$folder_name" 2>/dev/null || true
         fi
@@ -332,7 +332,7 @@ else
 .env
 .venv
 .DS_Store
-Readings
+Literature
 Output
 uv.lock
 *.pdf
@@ -368,10 +368,10 @@ echo "  $PROJECT_NAME/"
 echo "    ├── Notes/                 - LaTeX reading notes (git-tracked)"
 echo "    ├── Extracted/             - PDF-to-markdown extractions (git-tracked)"
 if [ -n "$DRIVE_PATH" ]; then
-    echo "    ├── Readings/              - PDFs ($CLOUD_TYPE, symlinked)"
+    echo "    ├── Literature/              - PDFs ($CLOUD_TYPE, symlinked)"
     echo "    ├── Output/                - Compiled PDF notes ($CLOUD_TYPE, symlinked)"
 else
-    echo "    ├── Readings/              - PDFs (gitignored, local)"
+    echo "    ├── Literature/              - PDFs (gitignored, local)"
     echo "    ├── Output/                - Compiled PDF notes (gitignored, local)"
 fi
 echo "    ├── READING-LOG.md         - Reading tracker"
@@ -386,8 +386,8 @@ echo ""
 echo "Next steps:"
 echo "1. Fill in API keys: edit .env"
 if [ -n "$DRIVE_PATH" ]; then
-    echo "2. Readings/ and Output/ are synced via $CLOUD_TYPE at: $DRIVE_ABS_PATH"
+    echo "2. Literature/ and Output/ are synced via $CLOUD_TYPE at: $DRIVE_ABS_PATH"
 else
-    echo "2. Optionally sync Readings/ and Output/ via cloud storage"
+    echo "2. Optionally sync Literature/ and Output/ via cloud storage"
 fi
-echo "3. Place PDFs in Readings/ and start taking notes!"
+echo "3. Place PDFs in Literature/ and start taking notes!"
