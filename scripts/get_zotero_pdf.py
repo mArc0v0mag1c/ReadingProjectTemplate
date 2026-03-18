@@ -47,7 +47,7 @@ def get_api_key():
     Returns:
         API key string, or None if not found
     """
-    env_file = Path(".env")
+    env_file = Path("../.env")
 
     if not env_file.exists():
         print(f"Error: .env file not found at {env_file}", file=sys.stderr)
@@ -69,7 +69,7 @@ def get_library_config():
     Returns:
         Tuple of (library_type, library_id) or (None, None) if not found
     """
-    env_file = Path(".env")
+    env_file = Path("../.env")
 
     if not env_file.exists():
         print(f"Error: .env file not found at {env_file}", file=sys.stderr)

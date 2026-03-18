@@ -47,7 +47,7 @@ Look for the attachment with `type: application/pdf` and note its `Key` (attachm
 Use the bundled script to get the PDF - it automatically tries local storage first, then downloads to `Literature/`:
 
 ```bash
-uv run python .claude/skills/zotero-paper-reader/scripts/get_zotero_pdf.py ATTACHMENT_KEY
+uv run python ../scripts/get_zotero_pdf.py ATTACHMENT_KEY
 ```
 
 The script workflow:
@@ -55,14 +55,14 @@ The script workflow:
 2. If found locally, copies to `Literature/`
 3. If not found locally, downloads from Zotero web library to `Literature/`
 
-**Security note:** The Zotero API key and library configuration are read directly from `.env` by the Python script and never exposed to the LLM. Required environment variables: `ZOTERO_API_KEY`, `ZOTERO_LIBRARY_TYPE`, `ZOTERO_LIBRARY_ID`.
+**Security note:** The Zotero API key and library configuration are read directly from root `.env` by the Python script and never exposed to the LLM. Required environment variables: `ZOTERO_API_KEY`, `ZOTERO_LIBRARY_TYPE`, `ZOTERO_LIBRARY_ID`.
 
 ### Step 4: Convert to Markdown
 
 Use the `mistral-pdf-to-markdown` skill to convert the PDF:
 
 ```bash
-uv run python .claude/skills/mistral-pdf-to-markdown/scripts/convert_pdf_to_markdown.py \
+uv run python ../scripts/convert_pdf_to_markdown.py \
   "Literature/FILENAME.pdf" \
   "Extracted/Author_Year_Title.md"
 ```
@@ -99,23 +99,22 @@ Provide the user with:
 **Workflow:**
 1. Search: `mcp__zotero__zotero_search_items(query="Are Intermediary Constraints Priced")`
 2. Get attachment: `mcp__zotero__zotero_get_item_children(item_key="KPRQ2DLZ")`
-3. Get PDF: `uv run python .claude/skills/zotero-paper-reader/scripts/get_zotero_pdf.py 2HSELEHX`
+3. Get PDF: `uv run python ../scripts/get_zotero_pdf.py 2HSELEHX`
    - Downloads to `Literature/Du_et_al_2023_Are_Intermediary_Constraints_Priced.pdf`
-4. Convert: `uv run python .claude/skills/mistral-pdf-to-markdown/scripts/convert_pdf_to_markdown.py Literature/Du_et_al_2023_Are_Intermediary_Constraints_Priced.pdf Extracted/Du_et_al_2023_Are_Intermediary_Constraints_Priced.md`
+4. Convert: `uv run python ../scripts/convert_pdf_to_markdown.py Literature/Du_et_al_2023_Are_Intermediary_Constraints_Priced.pdf Extracted/Du_et_al_2023_Are_Intermediary_Constraints_Priced.md`
 5. Read: `Read(file_path="Extracted/Du_et_al_2023_Are_Intermediary_Constraints_Priced.md", limit=500)`
 6. Summarize and offer to dive deeper into specific sections
 
 ## Notes
 
 - The skill works with both local and web Zotero libraries
-- For web libraries, requires `ZOTERO_API_KEY`, `ZOTERO_LIBRARY_TYPE`, and `ZOTERO_LIBRARY_ID` in `.env`
+- For web libraries, requires `ZOTERO_API_KEY`, `ZOTERO_LIBRARY_TYPE`, and `ZOTERO_LIBRARY_ID` in root `.env`
 - For local libraries, Zotero local API must be enabled in Zotero preferences
-- Requires Mistral API key in `.env` for PDF conversion
+- Requires Mistral API key in root `.env` for PDF conversion
 - Converted markdown files include extracted images in `images/` subfolder
 - Large papers (>40k tokens) should be read in sections to avoid context limits
 
 ## Resources
 
-### scripts/
-
-- `get_zotero_pdf.py` - Unified script that tries local storage first, then downloads from web API if needed
+- `../scripts/get_zotero_pdf.py` - Shared script that tries local storage first, then downloads from web API if needed
+- `../scripts/convert_pdf_to_markdown.py` - Shared Mistral OCR conversion script

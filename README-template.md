@@ -13,8 +13,7 @@ ReadingExample/
 ├── Extracted/       - PDF-to-markdown conversions (git-tracked)
 ├── Literature/        - PDF files (gitignored)
 ├── Output/          - Compiled PDF notes (gitignored)
-├── READING-LOG.md   - Reading tracker
-└── .env             - API keys (gitignored)
+└── READING-LOG.md   - Reading tracker
 ```
 
 ## Setup Instructions
@@ -40,7 +39,7 @@ The setup script will:
 
 ### API Keys
 
-Fill in your API keys in `.env`:
+Fill in your API keys in the root `.env` (shared across all projects):
 - `mistral_api_key` — For PDF-to-markdown conversion ([Mistral API](https://console.mistral.ai/))
 - `ZOTERO_API_KEY` — For Zotero paper fetching ([Zotero API](https://www.zotero.org/settings/keys))
 

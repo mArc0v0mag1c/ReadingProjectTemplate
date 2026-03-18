@@ -33,7 +33,6 @@ MacroTheory/
 ├── Output/             Compiled PDF notes (gitignored, optionally cloud-synced)
 ├── READING-LOG.md      Tracks what you've read, notes locations, up-next queue
 ├── CLAUDE.md           AI instructions for Claude
-├── .env                API keys (gitignored)
 └── setup_mac.sh        Environment setup (already run by create_project.sh)
 ```
 
@@ -54,7 +53,7 @@ MacroTheory/
 
 ### API Keys (optional)
 
-After creating a project, fill in `.env`:
+Fill in the root `.env` (shared by all projects):
 - `mistral_api_key` — for PDF-to-markdown OCR ([Mistral](https://console.mistral.ai/))
 - `ZOTERO_API_KEY` — for Zotero paper fetching ([Zotero](https://www.zotero.org/settings/keys))
 

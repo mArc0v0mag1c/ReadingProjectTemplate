@@ -18,8 +18,8 @@ import io
 
 
 def load_api_key():
-    """Load Mistral API key from .env"""
-    env_path = Path(".env")
+    """Load Mistral API key from root .env"""
+    env_path = Path("../.env")
     load_dotenv(env_path)
     api_key = os.getenv("mistral_api_key")
 

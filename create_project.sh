@@ -102,12 +102,10 @@ cd "$PROJECT_NAME"
 echo "Creating project directories..."
 mkdir -p Notes Extracted Literature Output QuickNotes
 
-# Copy Notes/STYLE-GUIDE.md
-if [ -f "$SCRIPT_DIR/ReadingExample/Notes/STYLE-GUIDE.md" ]; then
-    if [ ! -f Notes/STYLE-GUIDE.md ]; then
-        cp "$SCRIPT_DIR/ReadingExample/Notes/STYLE-GUIDE.md" Notes/STYLE-GUIDE.md
-        echo "Copied Notes/STYLE-GUIDE.md"
-    fi
+# Symlink Notes/STYLE-GUIDE.md to shared
+if [ ! -e Notes/STYLE-GUIDE.md ]; then
+    ln -s ../../shared/STYLE-GUIDE.md Notes/STYLE-GUIDE.md
+    echo "Linked Notes/STYLE-GUIDE.md -> shared/"
 fi
 
 # Copy Notes/references.bib
@@ -150,13 +148,13 @@ READINGLOG_EOF
 fi
 
 # ============================================================
-# Step 3: .env template
+# Step 3: .env template (shared at repo root)
 # ============================================================
 
-echo "Creating .env template..."
-if [ ! -f .env ]; then
-    cat > .env << ENV_EOF
-# Environment Variables for $PROJECT_NAME
+if [ ! -f "$SCRIPT_DIR/.env" ]; then
+    echo "Creating shared .env template at repo root..."
+    cat > "$SCRIPT_DIR/.env" << ENV_EOF
+# Shared Environment Variables (all reading projects)
 # This file is gitignored — fill in your actual API keys below
 
 # Mistral API (for mistral-pdf-to-markdown skill)
@@ -172,7 +170,9 @@ ZOTERO_LIBRARY_ID=
 # Local Zotero
 ZOTERO_LOCAL=false
 ENV_EOF
-    echo "Created .env template"
+    echo "Created shared .env at repo root"
+else
+    echo "Shared .env already exists at repo root"
 fi
 
 # ============================================================
@@ -249,28 +249,37 @@ if [ -f "CLAUDE.md" ]; then
 fi
 
 # ============================================================
-# Step 7: .mcp.json
+# Step 7: Symlink shared config (.mcp.json, .claude/, .github/, .gitignore)
 # ============================================================
 
-echo "Copying .mcp.json configuration..."
-if [ -f "$SCRIPT_DIR/ReadingExample/.mcp.json" ]; then
-    cp "$SCRIPT_DIR/ReadingExample/.mcp.json" .mcp.json
-    echo "Copied .mcp.json configuration"
+echo "Linking shared configuration..."
+
+# .mcp.json
+if [ ! -e .mcp.json ]; then
+    ln -s ../shared/.mcp.json .mcp.json
+    echo "Linked .mcp.json -> shared/"
+fi
+
+# .claude/ (agents, skills, settings)
+if [ ! -e .claude ]; then
+    ln -s ../shared/.claude .claude
+    echo "Linked .claude/ -> shared/"
+fi
+
+# .github/ (PR template)
+if [ ! -e .github ]; then
+    ln -s ../shared/.github .github
+    echo "Linked .github/ -> shared/"
+fi
+
+# .gitignore
+if [ ! -e .gitignore ]; then
+    ln -s ../shared/.gitignore .gitignore
+    echo "Linked .gitignore -> shared/"
 fi
 
 # ============================================================
-# Step 8: .claude/ folder (agents, skills, settings)
-# ============================================================
-
-echo "Copying .claude configuration..."
-if [ -d "$SCRIPT_DIR/ReadingExample/.claude" ]; then
-    cp -r "$SCRIPT_DIR/ReadingExample/.claude" .claude
-    find .claude -type f \( -name "*.md" -o -name "*.json" \) -exec sed -i '' "s/ReadingExample/$PROJECT_NAME/g" {} \;
-    echo "Copied .claude configuration with agents and skills"
-fi
-
-# ============================================================
-# Step 9: README
+# Step 8: README
 # ============================================================
 
 echo "Creating README..."
@@ -284,20 +293,7 @@ else
 fi
 
 # ============================================================
-# Step 10: PR template
-# ============================================================
-
-echo "Creating PR template..."
-if [ -f "$SCRIPT_DIR/ReadingExample/.github/PULL_REQUEST_TEMPLATE.md" ]; then
-    mkdir -p .github
-    if [ ! -f .github/PULL_REQUEST_TEMPLATE.md ]; then
-        cp "$SCRIPT_DIR/ReadingExample/.github/PULL_REQUEST_TEMPLATE.md" .github/PULL_REQUEST_TEMPLATE.md
-        echo "Created .github/PULL_REQUEST_TEMPLATE.md"
-    fi
-fi
-
-# ============================================================
-# Step 11: Symlinks (only when --drive is used)
+# Step 9: Symlinks (only when --drive is used)
 # ============================================================
 
 if [ -n "$DRIVE_PATH" ]; then
@@ -319,28 +315,7 @@ if [ -n "$DRIVE_PATH" ]; then
 fi
 
 # ============================================================
-# Step 12: .gitignore
-# ============================================================
-
-echo "Creating .gitignore..."
-if [ -f "$SCRIPT_DIR/ReadingExample/.gitignore" ]; then
-    cp "$SCRIPT_DIR/ReadingExample/.gitignore" .gitignore
-else
-    echo "Warning: ReadingExample/.gitignore not found, creating basic .gitignore"
-    cat > .gitignore << 'EOF'
-# Basics
-.env
-.venv
-.DS_Store
-Literature
-Output
-uv.lock
-*.pdf
-EOF
-fi
-
-# ============================================================
-# Step 13: Git init
+# Step 10: Git init
 # ============================================================
 
 echo "Initializing git repository..."
@@ -349,7 +324,7 @@ echo "Creating test branch..."
 git checkout -b test
 
 # ============================================================
-# Step 14: Run setup
+# Step 11: Run setup
 # ============================================================
 
 echo ""
@@ -377,15 +352,20 @@ fi
 echo "    ├── QuickNotes/            - Lightweight discussion notes (git-tracked)"
 echo "    ├── READING-LOG.md         - Reading tracker"
 echo "    ├── CLAUDE.md              - AI instructions"
-echo "    ├── .env                   - API keys (gitignored)"
 echo "    ├── pyproject.toml         - Python environment"
 echo "    ├── setup_mac.sh           - Setup script"
-echo "    └── README.md              - Setup instructions"
+echo "    ├── README.md              - Setup instructions"
+echo "    └── (symlinked from shared/: .claude/, .mcp.json, .gitignore, .github/)"
+echo ""
+echo "Shared resources (repo root):"
+echo "    ├── .env                   - API keys (all projects)"
+echo "    ├── scripts/               - Python scripts (all projects)"
+echo "    └── shared/                - Config, skills, agents, templates"
 echo ""
 echo "Branch: test (auto-created — all work happens here, PR to main when ready)"
 echo ""
 echo "Next steps:"
-echo "1. Fill in API keys: edit .env"
+echo "1. Fill in API keys: edit .env at the repo root"
 if [ -n "$DRIVE_PATH" ]; then
     echo "2. Literature/ and Output/ are synced via $CLOUD_TYPE at: $DRIVE_ABS_PATH"
 else

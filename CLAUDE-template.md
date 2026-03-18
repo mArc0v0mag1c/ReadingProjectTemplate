@@ -17,23 +17,30 @@ You are working in the `ReadingExample/` folder, which is a Git repository for a
 
 - Git-tracked folders: `Notes/`, `Extracted/`, `QuickNotes/`
 - Gitignored folders: `Literature/` (PDFs), `Output/` (compiled notes) — optionally synced via cloud storage (e.g., Dropbox, Google Drive)
-- `.env` — API keys (gitignored)
+- `../.env` — Shared API keys at repo root (gitignored)
+- Symlinked from `../shared/`: `.claude/`, `.mcp.json`, `.gitignore`, `.github/`, `Notes/STYLE-GUIDE.md`
+- Shared scripts at `../scripts/` (used by skills)
 
 ## Project Structure
 
 ```
 ReadingExample/
 ├── Notes/           - LaTeX reading notes (git-tracked)
-│   ├── STYLE-GUIDE.md
-│   ├── references.bib
+│   ├── STYLE-GUIDE.md  → ../shared/ (symlink)
+│   ├── references.bib  - Per-project bibliography
 │   └── <reading>/   - One folder per paper/chapter (multiple .tex files allowed)
 ├── Extracted/       - PDF-to-markdown conversions (git-tracked)
 ├── QuickNotes/      - Lightweight discussion notes per paper (git-tracked)
 ├── Literature/        - PDF files (gitignored, optionally cloud-synced)
 ├── Output/          - Compiled PDF notes (gitignored, optionally cloud-synced)
 ├── READING-LOG.md   - Reading tracker (Claude reads this first)
-└── .env             - API keys (gitignored)
+├── .claude/         → ../shared/.claude (symlink: skills, agents, settings)
+├── .mcp.json        → ../shared/.mcp.json (symlink)
+├── .gitignore       → ../shared/.gitignore (symlink)
+└── .github/         → ../shared/.github (symlink: PR template)
 ```
+
+**Important:** Files symlinked from `shared/` are shared across all projects. Edits to these files affect every project. Per-project files (CLAUDE.md, READING-LOG.md, references.bib, pyproject.toml, setup_mac.sh) are local to this project.
 
 ## Reading Log
 
