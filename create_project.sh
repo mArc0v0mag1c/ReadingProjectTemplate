@@ -5,7 +5,7 @@
 #
 # Usage:
 #   ./create_project.sh <project-name>                           # Local project
-#   ./create_project.sh --drive <cloud-path> <project-name>      # Literature & Output in cloud storage
+#   ./create_project.sh --drive <cloud-path> <project-name>      # Literature in cloud storage
 
 set -e  # Exit on any error
 
@@ -27,10 +27,10 @@ while [[ $# -gt 0 ]]; do
         -h|--help)
             echo "Usage:"
             echo "  $0 <project-name>                           # Local project"
-            echo "  $0 --drive <cloud-path> <project-name>      # Literature & Output in cloud storage"
+            echo "  $0 --drive <cloud-path> <project-name>      # Literature in cloud storage"
             echo ""
             echo "Options:"
-            echo "  --drive       Cloud storage path for Literature/ and Output/ (e.g., Google Drive, Dropbox)"
+            echo "  --drive       Cloud storage path for Literature/ (e.g., Google Drive, Dropbox)"
             echo "  -h, --help    Show this help message"
             echo ""
             echo "Examples:"
@@ -100,19 +100,19 @@ mkdir -p "$PROJECT_NAME"
 cd "$PROJECT_NAME"
 
 echo "Creating project directories..."
-mkdir -p Notes Extracted Literature Output QuickNotes
+mkdir -p Notes Extracted Literature Output
 
-# Symlink Notes/STYLE-GUIDE.md to shared
-if [ ! -e Notes/STYLE-GUIDE.md ]; then
-    ln -s ../../shared/STYLE-GUIDE.md Notes/STYLE-GUIDE.md
-    echo "Linked Notes/STYLE-GUIDE.md -> shared/"
+# Symlink Output/STYLE-GUIDE.md to shared
+if [ ! -e Output/STYLE-GUIDE.md ]; then
+    ln -s ../../shared/STYLE-GUIDE.md Output/STYLE-GUIDE.md
+    echo "Linked Output/STYLE-GUIDE.md -> shared/"
 fi
 
-# Copy Notes/references.bib
-if [ -f "$SCRIPT_DIR/ReadingExample/Notes/references.bib" ]; then
-    if [ ! -f Notes/references.bib ]; then
-        cp "$SCRIPT_DIR/ReadingExample/Notes/references.bib" Notes/references.bib
-        echo "Copied Notes/references.bib"
+# Copy Output/references.bib
+if [ -f "$SCRIPT_DIR/ReadingExample/Output/references.bib" ]; then
+    if [ ! -f Output/references.bib ]; then
+        cp "$SCRIPT_DIR/ReadingExample/Output/references.bib" Output/references.bib
+        echo "Copied Output/references.bib"
     fi
 fi
 
@@ -299,19 +299,17 @@ fi
 if [ -n "$DRIVE_PATH" ]; then
     echo "Setting up cloud storage symlinks..."
 
-    # Create cloud directories
-    mkdir -p "$DRIVE_ABS_PATH/Literature" "$DRIVE_ABS_PATH/Output"
+    # Create cloud directory for Literature
+    mkdir -p "$DRIVE_ABS_PATH/Literature"
 
-    # Replace local dirs with symlinks
-    for folder_name in Literature Output; do
-        if [ -d "./$folder_name" ] && [ ! -L "./$folder_name" ]; then
-            rmdir "./$folder_name" 2>/dev/null || true
-        fi
-        if [ ! -L "./$folder_name" ]; then
-            ln -s "$DRIVE_ABS_PATH/$folder_name" "./$folder_name"
-            echo "Created symlink: ./$folder_name -> $DRIVE_ABS_PATH/$folder_name"
-        fi
-    done
+    # Replace local Literature/ with symlink
+    if [ -d "./Literature" ] && [ ! -L "./Literature" ]; then
+        rmdir "./Literature" 2>/dev/null || true
+    fi
+    if [ ! -L "./Literature" ]; then
+        ln -s "$DRIVE_ABS_PATH/Literature" "./Literature"
+        echo "Created symlink: ./Literature -> $DRIVE_ABS_PATH/Literature"
+    fi
 fi
 
 # ============================================================
@@ -340,16 +338,14 @@ echo "Reading project created successfully!"
 echo ""
 echo "Project structure:"
 echo "  $PROJECT_NAME/"
-echo "    ├── Notes/                 - LaTeX reading notes (git-tracked)"
+echo "    ├── Notes/                 - Markdown discussion notes (git-tracked)"
 echo "    ├── Extracted/             - PDF-to-markdown extractions (git-tracked)"
+echo "    ├── Output/                - LaTeX notes (git-tracked; PDFs gitignored)"
 if [ -n "$DRIVE_PATH" ]; then
-    echo "    ├── Literature/              - PDFs ($CLOUD_TYPE, symlinked)"
-    echo "    ├── Output/                - Compiled PDF notes ($CLOUD_TYPE, symlinked)"
+    echo "    ├── Literature/          - PDFs ($CLOUD_TYPE, symlinked)"
 else
-    echo "    ├── Literature/              - PDFs (gitignored, local)"
-    echo "    ├── Output/                - Compiled PDF notes (gitignored, local)"
+    echo "    ├── Literature/          - PDFs (gitignored, local)"
 fi
-echo "    ├── QuickNotes/            - Lightweight discussion notes (git-tracked)"
 echo "    ├── READING-LOG.md         - Reading tracker"
 echo "    ├── CLAUDE.md              - AI instructions"
 echo "    ├── pyproject.toml         - Python environment"
@@ -367,7 +363,7 @@ echo ""
 echo "Next steps:"
 echo "1. Fill in API keys: edit .env at the repo root"
 if [ -n "$DRIVE_PATH" ]; then
-    echo "2. Literature/ and Output/ are synced via $CLOUD_TYPE at: $DRIVE_ABS_PATH"
+    echo "2. Literature/ is synced via $CLOUD_TYPE at: $DRIVE_ABS_PATH"
 else
     echo "2. Optionally sync Literature/ and Output/ via cloud storage"
 fi

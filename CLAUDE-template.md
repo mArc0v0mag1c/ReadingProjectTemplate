@@ -6,8 +6,8 @@
 1. **`READING-LOG.md`** — Read FIRST. What's been read, current readings, notes locations, up-next queue.
 2. **This file (`CLAUDE.md`)** — Project structure, note-taking conventions.
 3. **`Extracted/`** — Read the relevant extracted markdown before discussing any paper.
-4. **`QuickNotes/`** — Check for existing discussion notes; update or create new ones during discussion.
-5. **`Notes/STYLE-GUIDE.md`** — LaTeX note-writing workflow and formatting rules.
+4. **`Notes/`** — Check for existing discussion notes; update or create new ones during discussion.
+5. **`Output/STYLE-GUIDE.md`** — LaTeX note-writing workflow and formatting rules.
 6. **`.claude/skills/`** — Available skills (mistral-pdf-to-markdown, zotero-paper-reader).
 7. **`.claude/agents/`** — Specialized agents (note-checker).
 
@@ -15,24 +15,23 @@
 
 You are working in the `ReadingExample/` folder, which is a Git repository for academic reading and note-taking.
 
-- Git-tracked folders: `Notes/`, `Extracted/`, `QuickNotes/`
-- Gitignored folders: `Literature/` (PDFs), `Output/` (compiled notes) — optionally synced via cloud storage (e.g., Dropbox, Google Drive)
+- Git-tracked folders: `Notes/`, `Extracted/`, `Output/` (LaTeX source; compiled PDFs gitignored)
+- Gitignored folders: `Literature/` (PDFs) — optionally synced via cloud storage (e.g., Dropbox, Google Drive)
 - `../.env` — Shared API keys at repo root (gitignored)
-- Symlinked from `../shared/`: `.claude/`, `.mcp.json`, `.gitignore`, `.github/`, `Notes/STYLE-GUIDE.md`
+- Symlinked from `../shared/`: `.claude/`, `.mcp.json`, `.gitignore`, `.github/`, `Output/STYLE-GUIDE.md`
 - Shared scripts at `../scripts/` (used by skills)
 
 ## Project Structure
 
 ```
 ReadingExample/
-├── Notes/           - LaTeX reading notes (git-tracked)
+├── Notes/           - Markdown discussion notes per paper (git-tracked)
+├── Extracted/       - PDF-to-markdown conversions (git-tracked)
+├── Output/          - LaTeX reading notes (git-tracked; compiled PDFs gitignored)
 │   ├── STYLE-GUIDE.md  → ../shared/ (symlink)
 │   ├── references.bib  - Per-project bibliography
 │   └── <reading>/   - One folder per paper/chapter (multiple .tex files allowed)
-├── Extracted/       - PDF-to-markdown conversions (git-tracked)
-├── QuickNotes/      - Lightweight discussion notes per paper (git-tracked)
-├── Literature/        - PDF files (gitignored, optionally cloud-synced)
-├── Output/          - Compiled PDF notes (gitignored, optionally cloud-synced)
+├── Literature/      - PDF files (gitignored, optionally cloud-synced)
 ├── READING-LOG.md   - Reading tracker (Claude reads this first)
 ├── .claude/         → ../shared/.claude (symlink: skills, agents, settings)
 ├── .mcp.json        → ../shared/.mcp.json (symlink)
@@ -54,9 +53,9 @@ ReadingExample/
 - Finishing a reading (move to Completed with a one-liner takeaway)
 - Discovering related papers to read later (add to Up Next)
 
-## Quick Notes
+## Notes
 
-`QuickNotes/<paper-name>.md` — lightweight companion notes captured during discussion. These track key insights, logic chains, and brainstorms as you read. When you later write formal LaTeX notes, refer to these as source material.
+`Notes/<paper-name>.md` — lightweight companion notes captured during discussion. These track key insights, logic chains, and brainstorms as you read. When you later write formal LaTeX notes, refer to these as source material.
 
 Each file follows this structure:
 
@@ -80,20 +79,21 @@ Guidelines:
 - Logic chains should be numbered steps with citations
 - Brainstorms and cross-paper connections are welcome — label them clearly
 
-## Reading Notes
+## LaTeX Output
 
-Notes live in `Notes/<reading-name>/` using `\usepackage{marcoreport}`.
+LaTeX notes live in `Output/<reading-name>/` using `\usepackage{marcoreport}`.
 Each folder can have multiple `.tex` files (e.g., `main.tex`, `chapter3.tex`, `proofs.tex`).
-**Read `Notes/STYLE-GUIDE.md` before writing any note.**
+Compiled PDFs are gitignored but can be synced to cloud storage (e.g., Dropbox).
+**Read `Output/STYLE-GUIDE.md` before writing any note.**
 
 ### Workflow
 
 1. Place PDF in `Literature/` (manually or via Zotero skill)
 2. Extract PDF to markdown: use `mistral-pdf-to-markdown` skill → saves to `Extracted/`
 3. Read the extracted markdown; identify key passages
-4. Create `Notes/<reading-name>/main.tex` for structured LaTeX notes
+4. Create `Output/<reading-name>/main.tex` for structured LaTeX notes
 5. Quote relevant passages with page references
-6. Add BibTeX entry to `Notes/references.bib`
+6. Add BibTeX entry to `Output/references.bib`
 
 ### Quoting Convention
 
@@ -115,10 +115,7 @@ V(a) = \max_{c} u(c) + \beta V(a')  \tag{Source: eq.~3, p.~8}
 ### PDF Output
 
 LaTeX builds in-place for live preview (VS Code LaTeX Workshop).
-When notes are finalized, copy compiled PDFs to `Output/` for cloud sync:
-```bash
-cp Notes/<reading>/*.pdf Output/
-```
+Compiled PDFs stay in `Output/<reading-name>/` — they are gitignored but can be synced to cloud storage.
 
 ## Python Environment
 

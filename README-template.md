@@ -6,13 +6,13 @@ Academic reading project created with [ReadingProjectTemplate](https://github.co
 
 ```
 ReadingExample/
-├── Notes/           - LaTeX reading notes (git-tracked)
+├── Notes/           - Markdown discussion notes per paper (git-tracked)
+├── Extracted/       - PDF-to-markdown conversions (git-tracked)
+├── Output/          - LaTeX reading notes (git-tracked; compiled PDFs gitignored)
 │   ├── STYLE-GUIDE.md
 │   ├── references.bib
 │   └── <reading>/   - One folder per paper/chapter
-├── Extracted/       - PDF-to-markdown conversions (git-tracked)
-├── Literature/        - PDF files (gitignored)
-├── Output/          - Compiled PDF notes (gitignored)
+├── Literature/      - PDF files (gitignored)
 └── READING-LOG.md   - Reading tracker
 ```
 

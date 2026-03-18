@@ -72,10 +72,8 @@ ehthumbs.db
 Thumbs.db
 desktop.ini
 
-# Project specific (gitignored dirs — optionally cloud-synced)
+# Project specific
 Literature
-Output
-sync/
 uv.lock
 *.tmp
 *.bak

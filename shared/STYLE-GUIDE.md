@@ -2,7 +2,7 @@
 
 ## LaTeX Setup
 
-- Each set of notes lives in `Notes/<reading-name>/`
+- Each set of notes lives in `Output/<reading-name>/`
 - Multiple `.tex` files per folder allowed (e.g., `main.tex`, `chapter3.tex`, `proofs.tex`)
 - Use `\usepackage{marcoreport}` (shared style at `~/Library/TinyTeX/texmf-local/tex/latex/marco/`)
 - Build: `latexmk -pdf main.tex` from within the note subfolder
@@ -58,7 +58,7 @@ kpsewhich marcoreport.sty
 
 ### Shared Bibliography
 
-All note files reference a shared BibTeX file at `Notes/references.bib`:
+All note files reference a shared BibTeX file at `Output/references.bib`:
 ```latex
 \usepackage[backend=biber]{biblatex}
 \addbibresource{../references.bib}
@@ -149,11 +149,7 @@ V(a) = \max_{c} u(c) + \beta V(a')  \tag{Source: eq.~3, p.~8}
 ## PDF Output
 
 LaTeX builds in-place for live preview (LaTeX Workshop auto-rebuilds on save).
-When notes are finalized, copy compiled PDFs to `Output/` for cloud sync:
-
-```bash
-cp Notes/<reading-name>/*.pdf Output/
-```
+Compiled PDFs stay in `Output/<reading-name>/` — they are gitignored but can be synced to cloud storage.
 
 ## Live Preview Setup
 
