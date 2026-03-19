@@ -1,1 +1,1 @@
-../../shared/STYLE-GUIDE.md
+../../config/STYLE-GUIDE.md

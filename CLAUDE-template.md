@@ -13,33 +13,33 @@
 
 ## Working Directory Context
 
-You are working in the `ReadingExample/` folder, which is a Git repository for academic reading and note-taking.
+You are working in the `ReadingProjects/ReadingExample/` folder, an academic reading and note-taking project.
 
 - Git-tracked folders: `Notes/`, `Extracted/`, `Output/` (LaTeX source; compiled PDFs gitignored)
-- Gitignored folders: `Literature/` (PDFs) — optionally synced via cloud storage (e.g., Dropbox, Google Drive)
-- `../.env` — Shared API keys at repo root (gitignored)
-- Symlinked from `../shared/`: `.claude/`, `.mcp.json`, `.gitignore`, `.github/`, `Output/STYLE-GUIDE.md`
-- Shared scripts at `../scripts/` (used by skills)
+- Gitignored folders: `Literature/` (PDFs) — auto-synced to Dropbox if detected
+- `../../.env` — Shared API keys at repo root (gitignored)
+- Symlinked from `../../config/`: `.claude/`, `.mcp.json`, `.gitignore`, `.github/`, `Output/STYLE-GUIDE.md`
+- Shared scripts at `../../config/scripts/` (used by skills)
 
 ## Project Structure
 
 ```
-ReadingExample/
+ReadingProjects/ReadingExample/
 ├── Notes/           - Markdown discussion notes per paper (git-tracked)
 ├── Extracted/       - PDF-to-markdown conversions (git-tracked)
 ├── Output/          - LaTeX reading notes (git-tracked; compiled PDFs gitignored)
-│   ├── STYLE-GUIDE.md  → ../shared/ (symlink)
+│   ├── STYLE-GUIDE.md  → config/ (symlink)
 │   ├── references.bib  - Per-project bibliography
 │   └── <reading>/   - One folder per paper/chapter (multiple .tex files allowed)
-├── Literature/      - PDF files (gitignored, optionally cloud-synced)
+├── Literature/      - PDF files (gitignored, auto-synced to Dropbox)
 ├── READING-LOG.md   - Reading tracker (Claude reads this first)
-├── .claude/         → ../shared/.claude (symlink: skills, agents, settings)
-├── .mcp.json        → ../shared/.mcp.json (symlink)
-├── .gitignore       → ../shared/.gitignore (symlink)
-└── .github/         → ../shared/.github (symlink: PR template)
+├── .claude/         → config/.claude (symlink: skills, agents, settings)
+├── .mcp.json        → config/.mcp.json (symlink)
+├── .gitignore       → config/.gitignore (symlink)
+└── .github/         → config/.github (symlink: PR template)
 ```
 
-**Important:** Files symlinked from `shared/` are shared across all projects. Edits to these files affect every project. Per-project files (CLAUDE.md, READING-LOG.md, references.bib, pyproject.toml, setup_mac.sh) are local to this project.
+**Important:** Files symlinked from `config/` are shared across all projects. Edits to these files affect every project. Per-project files (CLAUDE.md, READING-LOG.md, references.bib, pyproject.toml, setup_mac.sh) are local to this project.
 
 ## Reading Log
 
@@ -83,7 +83,7 @@ Guidelines:
 
 LaTeX notes live in `Output/<reading-name>/` using `\usepackage{marcoreport}`.
 Each folder can have multiple `.tex` files (e.g., `main.tex`, `chapter3.tex`, `proofs.tex`).
-Compiled PDFs are gitignored but can be synced to cloud storage (e.g., Dropbox).
+Compiled PDFs are gitignored but can be synced to Dropbox.
 **Read `Output/STYLE-GUIDE.md` before writing any note.**
 
 ### Workflow
@@ -115,7 +115,11 @@ V(a) = \max_{c} u(c) + \beta V(a')  \tag{Source: eq.~3, p.~8}
 ### PDF Output
 
 LaTeX builds in-place for live preview (VS Code LaTeX Workshop).
-Compiled PDFs stay in `Output/<reading-name>/` — they are gitignored but can be synced to cloud storage.
+Compiled PDFs stay in `Output/<reading-name>/` (gitignored). To sync to Dropbox:
+```bash
+../../config/scripts/sync_pdfs.sh              # sync all
+../../config/scripts/sync_pdfs.sh <reading>    # sync one
+```
 
 ## Python Environment
 

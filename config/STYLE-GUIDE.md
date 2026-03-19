@@ -149,7 +149,11 @@ V(a) = \max_{c} u(c) + \beta V(a')  \tag{Source: eq.~3, p.~8}
 ## PDF Output
 
 LaTeX builds in-place for live preview (LaTeX Workshop auto-rebuilds on save).
-Compiled PDFs stay in `Output/<reading-name>/` — they are gitignored but can be synced to cloud storage.
+Compiled PDFs stay in `Output/<reading-name>/` (gitignored). To sync to Dropbox:
+```bash
+../../config/scripts/sync_pdfs.sh              # sync all
+../../config/scripts/sync_pdfs.sh <reading>    # sync one
+```
 
 ## Live Preview Setup
 

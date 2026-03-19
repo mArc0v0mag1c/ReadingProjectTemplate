@@ -1,18 +1,18 @@
 # ReadingExample
 
-Academic reading project created with [ReadingProjectTemplate](https://github.com/marcozhang1/ReadingProjectTemplate).
+Academic reading project created with [ReadingProjectTemplate](https://github.com/mArc0v0mag1c/ReadingProjectTemplate).
 
 ## Project Organization
 
 ```
-ReadingExample/
+ReadingProjects/ReadingExample/
 ├── Notes/           - Markdown discussion notes per paper (git-tracked)
 ├── Extracted/       - PDF-to-markdown conversions (git-tracked)
 ├── Output/          - LaTeX reading notes (git-tracked; compiled PDFs gitignored)
 │   ├── STYLE-GUIDE.md
 │   ├── references.bib
 │   └── <reading>/   - One folder per paper/chapter
-├── Literature/      - PDF files (gitignored)
+├── Literature/      - PDF files (gitignored, auto-synced to Dropbox)
 └── READING-LOG.md   - Reading tracker
 ```
 
@@ -48,4 +48,5 @@ Fill in your API keys in the root `.env` (shared across all projects):
 After setup, you should have:
 - Python environment ready with `uv sync`
 - Local `Notes/` and `Extracted/` folders in the repository
-- `Literature/` and `Output/` directories for PDFs and compiled notes
+- `Literature/` symlinked to Dropbox (if detected)
+- `Output/` for LaTeX notes (compiled PDFs gitignored)

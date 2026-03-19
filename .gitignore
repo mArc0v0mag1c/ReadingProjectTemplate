@@ -3,6 +3,5 @@
 .DS_Store
 .env
 
-# Project directories (independent git repos)
-/Sarkar
-/Econometrics
+# Private reading projects (separate repo)
+/ReadingProjects

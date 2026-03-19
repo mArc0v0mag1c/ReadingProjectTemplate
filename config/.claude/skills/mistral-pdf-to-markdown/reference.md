@@ -82,7 +82,7 @@ for pdf_file in pdf_dir.glob("*.pdf"):
 
     subprocess.run([
         "python",
-        "../scripts/convert_pdf_to_markdown.py",
+        "../../config/scripts/convert_pdf_to_markdown.py",
         str(pdf_file),
         str(output_file)
     ])

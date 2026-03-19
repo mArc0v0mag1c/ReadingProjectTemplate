@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # Project template generator for academic reading projects
-# Creates a project for reading papers/textbooks and writing LaTeX notes
+# Creates a project inside ReadingProjects/ for reading papers/textbooks and writing LaTeX notes
 #
 # Usage:
-#   ./create_project.sh <project-name>                           # Local project
-#   ./create_project.sh --drive <cloud-path> <project-name>      # Literature in cloud storage
+#   ./create_project.sh <project-name>                           # Auto-detects Dropbox, or local
+#   ./create_project.sh --drive <cloud-path> <project-name>      # Literature in cloud storage (manual)
 
 set -e  # Exit on any error
 
@@ -26,8 +26,8 @@ while [[ $# -gt 0 ]]; do
             ;;
         -h|--help)
             echo "Usage:"
-            echo "  $0 <project-name>                           # Local project"
-            echo "  $0 --drive <cloud-path> <project-name>      # Literature in cloud storage"
+            echo "  $0 <project-name>                           # Auto-detects ~/Dropbox/ReadingProjects, or local"
+            echo "  $0 --drive <cloud-path> <project-name>      # Literature in cloud storage (manual)"
             echo ""
             echo "Options:"
             echo "  --drive       Cloud storage path for Literature/ (e.g., Google Drive, Dropbox)"
@@ -35,7 +35,7 @@ while [[ $# -gt 0 ]]; do
             echo ""
             echo "Examples:"
             echo "  $0 MacroTheory"
-            echo "  $0 --drive ~/Dropbox/Reading MacroTheory"
+            echo "  $0 --drive ~/GoogleDrive/Reading MacroTheory"
             exit 0
             ;;
         *)
@@ -51,24 +51,29 @@ if [ -z "$POSITIONAL_ARG" ]; then
     exit 1
 fi
 
-# ============================================================
-# Setup
-# ============================================================
-
-PROJECT_PATH="$POSITIONAL_ARG"
-
-if [[ "$PROJECT_PATH" == */* ]]; then
-    PROJECT_DIR=$(dirname "$PROJECT_PATH")
-    PROJECT_NAME=$(basename "$PROJECT_PATH")
-    mkdir -p "$PROJECT_DIR"
-    cd "$PROJECT_DIR"
-else
-    PROJECT_NAME="$PROJECT_PATH"
-    PROJECT_DIR="."
-fi
+PROJECT_NAME="$POSITIONAL_ARG"
 
 echo "Creating reading project: $PROJECT_NAME"
-echo "Location: $(pwd)"
+
+# ============================================================
+# Auto-detect Dropbox
+# ============================================================
+
+if [ -z "$DRIVE_PATH" ]; then
+    DROPBOX_ROOT=""
+    for candidate in "$HOME/Dropbox" "$HOME/Library/CloudStorage/Dropbox"; do
+        if [ -d "$candidate" ]; then
+            DROPBOX_ROOT="$candidate"
+            break
+        fi
+    done
+
+    if [ -n "$DROPBOX_ROOT" ]; then
+        DRIVE_PATH="$DROPBOX_ROOT/ReadingProjects"
+        mkdir -p "$DRIVE_PATH"
+        echo "Auto-detected Dropbox: $DRIVE_PATH"
+    fi
+fi
 
 # Resolve --drive path
 if [ -n "$DRIVE_PATH" ]; then
@@ -93,19 +98,19 @@ fi
 echo ""
 
 # ============================================================
-# Step 1: Create project directory
+# Step 1: Create project directory inside ReadingProjects/
 # ============================================================
 
-mkdir -p "$PROJECT_NAME"
-cd "$PROJECT_NAME"
+mkdir -p "$SCRIPT_DIR/ReadingProjects/$PROJECT_NAME"
+cd "$SCRIPT_DIR/ReadingProjects/$PROJECT_NAME"
 
 echo "Creating project directories..."
 mkdir -p Notes Extracted Literature Output
 
-# Symlink Output/STYLE-GUIDE.md to shared
+# Symlink Output/STYLE-GUIDE.md to config
 if [ ! -e Output/STYLE-GUIDE.md ]; then
-    ln -s ../../shared/STYLE-GUIDE.md Output/STYLE-GUIDE.md
-    echo "Linked Output/STYLE-GUIDE.md -> shared/"
+    ln -s ../../../config/STYLE-GUIDE.md Output/STYLE-GUIDE.md
+    echo "Linked Output/STYLE-GUIDE.md -> config/"
 fi
 
 # Copy Output/references.bib
@@ -249,34 +254,30 @@ if [ -f "CLAUDE.md" ]; then
 fi
 
 # ============================================================
-# Step 7: Symlink shared config (.mcp.json, .claude/, .github/, .gitignore)
+# Step 7: Symlink config (.mcp.json, .claude/, .github/, .gitignore)
 # ============================================================
 
 echo "Linking shared configuration..."
 
 # .mcp.json
 if [ ! -e .mcp.json ]; then
-    ln -s ../shared/.mcp.json .mcp.json
-    echo "Linked .mcp.json -> shared/"
+    ln -s ../../config/.mcp.json .mcp.json
+    echo "Linked .mcp.json -> config/"
 fi
 
 # .claude/ (agents, skills, settings)
 if [ ! -e .claude ]; then
-    ln -s ../shared/.claude .claude
-    echo "Linked .claude/ -> shared/"
+    ln -s ../../config/.claude .claude
+    echo "Linked .claude/ -> config/"
 fi
 
 # .github/ (PR template)
 if [ ! -e .github ]; then
-    ln -s ../shared/.github .github
-    echo "Linked .github/ -> shared/"
+    ln -s ../../config/.github .github
+    echo "Linked .github/ -> config/"
 fi
 
-# .gitignore
-if [ ! -e .gitignore ]; then
-    ln -s ../shared/.gitignore .gitignore
-    echo "Linked .gitignore -> shared/"
-fi
+# .gitignore — handled by ReadingProjects root .gitignore (no per-project symlink needed)
 
 # ============================================================
 # Step 8: README
@@ -313,16 +314,7 @@ if [ -n "$DRIVE_PATH" ]; then
 fi
 
 # ============================================================
-# Step 10: Git init
-# ============================================================
-
-echo "Initializing git repository..."
-git init
-echo "Creating test branch..."
-git checkout -b test
-
-# ============================================================
-# Step 11: Run setup
+# Step 10: Run setup
 # ============================================================
 
 echo ""
@@ -337,7 +329,7 @@ echo ""
 echo "Reading project created successfully!"
 echo ""
 echo "Project structure:"
-echo "  $PROJECT_NAME/"
+echo "  ReadingProjects/$PROJECT_NAME/"
 echo "    ├── Notes/                 - Markdown discussion notes (git-tracked)"
 echo "    ├── Extracted/             - PDF-to-markdown extractions (git-tracked)"
 echo "    ├── Output/                - LaTeX notes (git-tracked; PDFs gitignored)"
@@ -348,23 +340,18 @@ else
 fi
 echo "    ├── READING-LOG.md         - Reading tracker"
 echo "    ├── CLAUDE.md              - AI instructions"
-echo "    ├── pyproject.toml         - Python environment"
-echo "    ├── setup_mac.sh           - Setup script"
-echo "    ├── README.md              - Setup instructions"
-echo "    └── (symlinked from shared/: .claude/, .mcp.json, .gitignore, .github/)"
+echo "    └── (symlinked from config/: .claude/, .mcp.json, .gitignore, .github/)"
 echo ""
 echo "Shared resources (repo root):"
 echo "    ├── .env                   - API keys (all projects)"
-echo "    ├── scripts/               - Python scripts (all projects)"
-echo "    └── shared/                - Config, skills, agents, templates"
-echo ""
-echo "Branch: test (auto-created — all work happens here, PR to main when ready)"
+echo "    └── config/                - Skills, agents, scripts, templates"
 echo ""
 echo "Next steps:"
 echo "1. Fill in API keys: edit .env at the repo root"
 if [ -n "$DRIVE_PATH" ]; then
     echo "2. Literature/ is synced via $CLOUD_TYPE at: $DRIVE_ABS_PATH"
+    echo "3. After compiling LaTeX notes, run: ../../config/scripts/sync_pdfs.sh"
 else
-    echo "2. Optionally sync Literature/ and Output/ via cloud storage"
+    echo "2. Optionally sync Literature/ via cloud storage"
 fi
-echo "3. Place PDFs in Literature/ and start taking notes!"
+echo "4. Place PDFs in Literature/ and start taking notes!"

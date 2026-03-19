@@ -47,7 +47,7 @@ Look for the attachment with `type: application/pdf` and note its `Key` (attachm
 Use the bundled script to get the PDF - it automatically tries local storage first, then downloads to `Literature/`:
 
 ```bash
-uv run python ../scripts/get_zotero_pdf.py ATTACHMENT_KEY
+uv run python ../../config/scripts/get_zotero_pdf.py ATTACHMENT_KEY
 ```
 
 The script workflow:
@@ -62,7 +62,7 @@ The script workflow:
 Use the `mistral-pdf-to-markdown` skill to convert the PDF:
 
 ```bash
-uv run python ../scripts/convert_pdf_to_markdown.py \
+uv run python ../../config/scripts/convert_pdf_to_markdown.py \
   "Literature/FILENAME.pdf" \
   "Extracted/Author_Year_Title.md"
 ```
@@ -99,9 +99,9 @@ Provide the user with:
 **Workflow:**
 1. Search: `mcp__zotero__zotero_search_items(query="Are Intermediary Constraints Priced")`
 2. Get attachment: `mcp__zotero__zotero_get_item_children(item_key="KPRQ2DLZ")`
-3. Get PDF: `uv run python ../scripts/get_zotero_pdf.py 2HSELEHX`
+3. Get PDF: `uv run python ../../config/scripts/get_zotero_pdf.py 2HSELEHX`
    - Downloads to `Literature/Du_et_al_2023_Are_Intermediary_Constraints_Priced.pdf`
-4. Convert: `uv run python ../scripts/convert_pdf_to_markdown.py Literature/Du_et_al_2023_Are_Intermediary_Constraints_Priced.pdf Extracted/Du_et_al_2023_Are_Intermediary_Constraints_Priced.md`
+4. Convert: `uv run python ../../config/scripts/convert_pdf_to_markdown.py Literature/Du_et_al_2023_Are_Intermediary_Constraints_Priced.pdf Extracted/Du_et_al_2023_Are_Intermediary_Constraints_Priced.md`
 5. Read: `Read(file_path="Extracted/Du_et_al_2023_Are_Intermediary_Constraints_Priced.md", limit=500)`
 6. Summarize and offer to dive deeper into specific sections
 
@@ -116,5 +116,5 @@ Provide the user with:
 
 ## Resources
 
-- `../scripts/get_zotero_pdf.py` - Shared script that tries local storage first, then downloads from web API if needed
-- `../scripts/convert_pdf_to_markdown.py` - Shared Mistral OCR conversion script
+- `../../config/scripts/get_zotero_pdf.py` - Shared script that tries local storage first, then downloads from web API if needed
+- `../../config/scripts/convert_pdf_to_markdown.py` - Shared Mistral OCR conversion script
