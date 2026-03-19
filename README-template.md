@@ -11,6 +11,7 @@ ReadingProjects/ReadingExample/
 ├── Output/          - LaTeX reading notes (git-tracked; compiled PDFs gitignored)
 │   ├── STYLE-GUIDE.md
 │   ├── references.bib
+│   ├── Compiled/    - Auto-copied PDFs synced to Dropbox (<foldername>.pdf)
 │   └── <reading>/   - One folder per paper/chapter
 ├── Literature/      - PDF files (gitignored, auto-synced to Dropbox)
 └── READING-LOG.md   - Reading tracker
@@ -50,3 +51,6 @@ After setup, you should have:
 - Local `Notes/` and `Extracted/` folders in the repository
 - `Literature/` symlinked to Dropbox (if detected)
 - `Output/` for LaTeX notes (compiled PDFs gitignored)
+- `Output/Compiled/` symlinked to Dropbox (auto-copies PDFs on every build)
+
+**Important:** Open this project folder in VS Code (not the template root) so LaTeX Workshop picks up `.vscode/settings.json` for auto-build and auto-copy.

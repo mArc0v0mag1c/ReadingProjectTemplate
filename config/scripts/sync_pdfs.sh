@@ -1,41 +1,50 @@
 #!/bin/bash
-# Sync compiled PDFs from Output/ to Dropbox
-# Usage: ../scripts/sync_pdfs.sh [reading-name]
-#   No args: syncs all PDFs from Output/
-#   With arg: syncs PDFs from Output/<reading-name>/
+# Manually sync compiled PDFs from Output/<reading>/ to Output/Compiled/
+# Naming: <foldername>.pdf (e.g., Output/Noise/main.pdf → Compiled/Noise.pdf)
+#
+# Note: This is a manual fallback. LaTeX Workshop auto-copies on every build.
+#
+# Usage:
+#   ../../config/scripts/sync_pdfs.sh              # sync all
+#   ../../config/scripts/sync_pdfs.sh <reading>    # sync one
 
 set -e
 
-# Find Dropbox path from Literature/ symlink
-if [ -L "Literature" ]; then
-    DRIVE_PROJECT_PATH="$(dirname "$(readlink Literature)")"
-else
-    echo "Error: Literature/ is not a symlink — no Dropbox configured for this project."
+COMPILED="Output/Compiled"
+
+if [ ! -d "$COMPILED" ] && [ ! -L "$COMPILED" ]; then
+    echo "Error: Output/Compiled/ does not exist."
+    echo "Run create_project.sh or create the symlink manually."
     exit 1
 fi
 
-DROPBOX_OUTPUT="$DRIVE_PROJECT_PATH/Output"
-mkdir -p "$DROPBOX_OUTPUT"
+sync_reading() {
+    local dir="$1"
+    local reading="$(basename "$dir")"
+
+    # Skip Compiled/ itself
+    [ "$reading" = "Compiled" ] && return
+
+    find "$dir" -maxdepth 1 -name "*.pdf" | while read -r pdf; do
+        cp "$pdf" "$COMPILED/${reading}.pdf"
+        echo "  $COMPILED/${reading}.pdf"
+    done
+}
 
 if [ -n "$1" ]; then
-    # Sync specific reading
     SRC="Output/$1"
     if [ ! -d "$SRC" ]; then
         echo "Error: $SRC does not exist."
         exit 1
     fi
-    mkdir -p "$DROPBOX_OUTPUT/$1"
-    find "$SRC" -name "*.pdf" -exec cp {} "$DROPBOX_OUTPUT/$1/" \;
-    echo "Synced PDFs from $SRC -> $DROPBOX_OUTPUT/$1/"
+    echo "Syncing PDFs from $SRC:"
+    sync_reading "$SRC"
 else
-    # Sync all readings
-    COUNT=0
+    echo "Syncing all PDFs to $COMPILED/:"
     for dir in Output/*/; do
         [ -d "$dir" ] || continue
-        READING="$(basename "$dir")"
-        mkdir -p "$DROPBOX_OUTPUT/$READING"
-        find "$dir" -name "*.pdf" -exec cp {} "$DROPBOX_OUTPUT/$READING/" \;
-        COUNT=$((COUNT + 1))
+        sync_reading "$dir"
     done
-    echo "Synced PDFs from $COUNT reading(s) -> $DROPBOX_OUTPUT/"
 fi
+
+echo "Done."

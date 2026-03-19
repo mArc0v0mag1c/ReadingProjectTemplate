@@ -277,6 +277,12 @@ if [ ! -e .github ]; then
     echo "Linked .github/ -> config/"
 fi
 
+# .vscode/ (LaTeX Workshop settings with auto-copy)
+if [ ! -e .vscode ]; then
+    ln -s ../../config/.vscode .vscode
+    echo "Linked .vscode/ -> config/"
+fi
+
 # .gitignore — handled by ReadingProjects root .gitignore (no per-project symlink needed)
 
 # ============================================================
@@ -300,8 +306,9 @@ fi
 if [ -n "$DRIVE_PATH" ]; then
     echo "Setting up cloud storage symlinks..."
 
-    # Create cloud directory for Literature
+    # Create cloud directories
     mkdir -p "$DRIVE_ABS_PATH/Literature"
+    mkdir -p "$DRIVE_ABS_PATH/Compiled"
 
     # Replace local Literature/ with symlink
     if [ -d "./Literature" ] && [ ! -L "./Literature" ]; then
@@ -310,6 +317,12 @@ if [ -n "$DRIVE_PATH" ]; then
     if [ ! -L "./Literature" ]; then
         ln -s "$DRIVE_ABS_PATH/Literature" "./Literature"
         echo "Created symlink: ./Literature -> $DRIVE_ABS_PATH/Literature"
+    fi
+
+    # Symlink Output/Compiled/ to Dropbox
+    if [ ! -L "./Output/Compiled" ]; then
+        ln -s "$DRIVE_ABS_PATH/Compiled" "./Output/Compiled"
+        echo "Created symlink: ./Output/Compiled -> $DRIVE_ABS_PATH/Compiled"
     fi
 fi
 
@@ -340,7 +353,7 @@ else
 fi
 echo "    ├── READING-LOG.md         - Reading tracker"
 echo "    ├── CLAUDE.md              - AI instructions"
-echo "    └── (symlinked from config/: .claude/, .mcp.json, .gitignore, .github/)"
+echo "    └── (symlinked from config/: .claude/, .mcp.json, .github/, .vscode/)"
 echo ""
 echo "Shared resources (repo root):"
 echo "    ├── .env                   - API keys (all projects)"
@@ -350,7 +363,7 @@ echo "Next steps:"
 echo "1. Fill in API keys: edit .env at the repo root"
 if [ -n "$DRIVE_PATH" ]; then
     echo "2. Literature/ is synced via $CLOUD_TYPE at: $DRIVE_ABS_PATH"
-    echo "3. After compiling LaTeX notes, run: ../../config/scripts/sync_pdfs.sh"
+    echo "3. Compiled PDFs auto-copy to Dropbox via Output/Compiled/ on every build"
 else
     echo "2. Optionally sync Literature/ via cloud storage"
 fi

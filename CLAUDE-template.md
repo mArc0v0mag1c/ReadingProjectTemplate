@@ -18,7 +18,7 @@ You are working in the `ReadingProjects/ReadingExample/` folder, an academic rea
 - Git-tracked folders: `Notes/`, `Extracted/`, `Output/` (LaTeX source; compiled PDFs gitignored)
 - Gitignored folders: `Literature/` (PDFs) — auto-synced to Dropbox if detected
 - `../../.env` — Shared API keys at repo root (gitignored)
-- Symlinked from `../../config/`: `.claude/`, `.mcp.json`, `.gitignore`, `.github/`, `Output/STYLE-GUIDE.md`
+- Symlinked from `../../config/`: `.claude/`, `.mcp.json`, `.gitignore`, `.github/`, `.vscode/`, `Output/STYLE-GUIDE.md`
 - Shared scripts at `../../config/scripts/` (used by skills)
 
 ## Project Structure
@@ -30,13 +30,15 @@ ReadingProjects/ReadingExample/
 ├── Output/          - LaTeX reading notes (git-tracked; compiled PDFs gitignored)
 │   ├── STYLE-GUIDE.md  → config/ (symlink)
 │   ├── references.bib  - Per-project bibliography
+│   ├── Compiled/    → Dropbox (symlink; auto-copied as <foldername>.pdf)
 │   └── <reading>/   - One folder per paper/chapter (multiple .tex files allowed)
 ├── Literature/      - PDF files (gitignored, auto-synced to Dropbox)
 ├── READING-LOG.md   - Reading tracker (Claude reads this first)
 ├── .claude/         → config/.claude (symlink: skills, agents, settings)
 ├── .mcp.json        → config/.mcp.json (symlink)
 ├── .gitignore       → config/.gitignore (symlink)
-└── .github/         → config/.github (symlink: PR template)
+├── .github/         → config/.github (symlink: PR template)
+└── .vscode/         → config/.vscode (symlink: LaTeX Workshop auto-copy)
 ```
 
 **Important:** Files symlinked from `config/` are shared across all projects. Edits to these files affect every project. Per-project files (CLAUDE.md, READING-LOG.md, references.bib, pyproject.toml, setup_mac.sh) are local to this project.
@@ -115,11 +117,9 @@ V(a) = \max_{c} u(c) + \beta V(a')  \tag{Source: eq.~3, p.~8}
 ### PDF Output
 
 LaTeX builds in-place for live preview (VS Code LaTeX Workshop).
-Compiled PDFs stay in `Output/<reading-name>/` (gitignored). To sync to Dropbox:
-```bash
-../../config/scripts/sync_pdfs.sh              # sync all
-../../config/scripts/sync_pdfs.sh <reading>    # sync one
-```
+Compiled PDFs are **auto-copied** to `Output/Compiled/<foldername>.pdf` on every build (via LaTeX Workshop recipe). `Compiled/` is symlinked to Dropbox, so PDFs sync automatically.
+
+Example: `Output/Noise/main.pdf` → `Output/Compiled/Noise.pdf` → Dropbox.
 
 ## Python Environment
 

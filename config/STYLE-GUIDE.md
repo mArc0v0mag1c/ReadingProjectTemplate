@@ -149,11 +149,9 @@ V(a) = \max_{c} u(c) + \beta V(a')  \tag{Source: eq.~3, p.~8}
 ## PDF Output
 
 LaTeX builds in-place for live preview (LaTeX Workshop auto-rebuilds on save).
-Compiled PDFs stay in `Output/<reading-name>/` (gitignored). To sync to Dropbox:
-```bash
-../../config/scripts/sync_pdfs.sh              # sync all
-../../config/scripts/sync_pdfs.sh <reading>    # sync one
-```
+Compiled PDFs are **auto-copied** to `Output/Compiled/<foldername>.pdf` on every build (via the "latexmk + copy" recipe in `.vscode/settings.json`). `Compiled/` is symlinked to Dropbox, so PDFs sync automatically.
+
+Example: `Output/Noise/main.pdf` → `Output/Compiled/Noise.pdf` → Dropbox.
 
 ## Live Preview Setup
 

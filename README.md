@@ -30,6 +30,7 @@ ReadingProjectTemplate/
 │   │   ├── Output/              LaTeX notes (git-tracked; compiled PDFs gitignored)
 │   │   │   ├── STYLE-GUIDE.md   How to write notes (→ config/)
 │   │   │   ├── references.bib   Per-project bibliography
+│   │   │   ├── Compiled/        Auto-copied PDFs synced to Dropbox (→ Dropbox)
 │   │   │   └── <reading>/       One folder per paper/chapter
 │   │   ├── Literature/          PDFs (gitignored, auto-synced to Dropbox)
 │   │   ├── READING-LOG.md       Tracks readings, notes locations, up-next queue
@@ -44,7 +45,7 @@ ReadingProjectTemplate/
 2. **Extract to markdown** using the `mistral-pdf-to-markdown` skill → saves to `Extracted/`
 3. **Discuss the paper** with Claude — notes go to `Notes/<paper>.md`
 4. **Write LaTeX notes** in `Output/<reading>/main.tex` using `marcoreport.sty`
-5. **Sync compiled PDFs** to Dropbox: `../../config/scripts/sync_pdfs.sh`
+5. **Compiled PDFs** auto-sync to Dropbox via `Output/Compiled/` on every build
 6. **Update `READING-LOG.md`** so Claude knows your reading history
 
 ## Prerequisites
@@ -67,12 +68,17 @@ Fill in `.env` at the repo root (shared by all projects):
 | `mistral-pdf-to-markdown` | Converts PDFs to markdown via Mistral OCR API |
 | `zotero-paper-reader` | Fetches papers from Zotero, downloads to `Literature/`, converts to markdown |
 | `note-checker` agent | Validates your LaTeX notes against extracted source material |
-| `sync_pdfs.sh` | Copies compiled PDFs from `Output/` to Dropbox |
+| LaTeX Workshop recipe | Auto-copies compiled PDFs to `Output/Compiled/` (Dropbox) on every build |
 
 ## Design Principles
 
 - **One project per topic/course** — multiple readings and notes inside
 - **Shared config** — skills, agents, scripts live once in `config/`, symlinked per project
 - **Dropbox auto-detection** — if `~/Dropbox` exists, PDFs sync automatically
+- **Auto-copy on build** — compiled PDFs auto-copy to `Output/Compiled/` (Dropbox) via LaTeX Workshop
 - **Draft-first workflow** — Claude writes a plain text draft, you approve, then LaTeX
 - **Reading log as memory** — `READING-LOG.md` gives Claude persistent context
+
+## Important
+
+Open the **project folder** (e.g., `ReadingProjects/MacroTheory/`) in VS Code — not the template root. This ensures `.vscode/settings.json` is picked up for auto-build and auto-copy.

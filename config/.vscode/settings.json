@@ -1,0 +1,32 @@
+{
+  "latex-workshop.latex.tools": [
+    {
+      "name": "latexmk",
+      "command": "latexmk",
+      "args": [
+        "-synctex=1",
+        "-interaction=nonstopmode",
+        "-file-line-error",
+        "-pdf",
+        "-outdir=%OUTDIR%",
+        "%DOC%"
+      ],
+      "env": {}
+    },
+    {
+      "name": "copy_to_compiled",
+      "command": "bash",
+      "args": [
+        "-c",
+        "READING=$(basename \"%DIR%\"); COMPILED=\"%DIR%/../Compiled\"; if [ -d \"$COMPILED\" ] || [ -L \"$COMPILED\" ]; then cp \"%OUTDIR%/%DOCFILE%.pdf\" \"$COMPILED/$READING.pdf\" && echo \"Copied to $COMPILED/$READING.pdf\"; fi"
+      ],
+      "env": {}
+    }
+  ],
+  "latex-workshop.latex.recipes": [
+    {
+      "name": "latexmk + copy",
+      "tools": ["latexmk", "copy_to_compiled"]
+    }
+  ]
+}
