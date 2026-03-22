@@ -102,6 +102,13 @@ echo ""
 # ============================================================
 
 mkdir -p "$SCRIPT_DIR/ReadingProjects/$PROJECT_NAME"
+
+# Create root CLAUDE.md for ReadingProjects/ if it doesn't exist
+if [ ! -f "$SCRIPT_DIR/ReadingProjects/CLAUDE.md" ] && [ -f "$SCRIPT_DIR/CLAUDE-root-template.md" ]; then
+    cp "$SCRIPT_DIR/CLAUDE-root-template.md" "$SCRIPT_DIR/ReadingProjects/CLAUDE.md"
+    echo "Created ReadingProjects/CLAUDE.md (root instructions)"
+fi
+
 cd "$SCRIPT_DIR/ReadingProjects/$PROJECT_NAME"
 
 echo "Creating project directories..."
@@ -286,21 +293,7 @@ fi
 # .gitignore — handled by ReadingProjects root .gitignore (no per-project symlink needed)
 
 # ============================================================
-# Step 8: README
-# ============================================================
-
-echo "Creating README..."
-if [ -f "$SCRIPT_DIR/README-template.md" ]; then
-    cp "$SCRIPT_DIR/README-template.md" README.md
-    sed -i '' "s/ReadingExample/$PROJECT_NAME/g" README.md
-else
-    echo "# $PROJECT_NAME" > README.md
-    echo "" >> README.md
-    echo "Academic reading project: $PROJECT_NAME" >> README.md
-fi
-
-# ============================================================
-# Step 9: Symlinks (only when --drive is used)
+# Step 8: Symlinks (only when --drive is used)
 # ============================================================
 
 if [ -n "$DRIVE_PATH" ]; then

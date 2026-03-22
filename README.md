@@ -81,4 +81,6 @@ Fill in `.env` at the repo root (shared by all projects):
 
 ## Important
 
-Open the **project folder** (e.g., `ReadingProjects/MacroTheory/`) in VS Code — not the template root. This ensures `.vscode/settings.json` is picked up for auto-build and auto-copy.
+- Open **`ReadingProjects/`** as your VS Code workspace for day-to-day reading work — this gives Claude the root `CLAUDE.md` with shared discussion rules plus per-project `CLAUDE.md` files for project-specific details.
+- LaTeX auto-compile and auto-copy work regardless of which level you open (paths are relative to the `.tex` file).
+- Open `ReadingProjectTemplate/` only when editing the template infrastructure (config/, create_project.sh, etc.).
