@@ -8,6 +8,8 @@
       "WebSearch",
       "Skill(mistral-pdf-to-markdown)",
       "Skill(zotero-paper-reader)",
+      "Skill(research-junshi)",
+      "Skill(method-tracker)",
       "mcp__zotero__zotero_get_recent",
       "mcp__zotero__zotero_semantic_search"
     ],

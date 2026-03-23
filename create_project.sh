@@ -98,6 +98,32 @@ fi
 echo ""
 
 # ============================================================
+# Step 0: Global ~/.claude/CLAUDE.md (user-level Claude Code config)
+# ============================================================
+
+if [ ! -f "$HOME/.claude/CLAUDE.md" ]; then
+    mkdir -p "$HOME/.claude"
+    if [ -f "$SCRIPT_DIR/CLAUDE-global-template.md" ]; then
+        cp "$SCRIPT_DIR/CLAUDE-global-template.md" "$HOME/.claude/CLAUDE.md"
+        echo "Installed ~/.claude/CLAUDE.md (global Claude Code instructions)"
+        echo "  Edit the 'Who I Am' section to personalize it."
+    fi
+else
+    echo "~/.claude/CLAUDE.md already exists — skipping."
+fi
+
+# Check for ResearchHub (optional, needed for research-junshi and method-tracker)
+RESEARCHHUB_DIR="$HOME/vscodeproject/ResearchHub"
+if [ ! -d "$RESEARCHHUB_DIR" ]; then
+    echo ""
+    echo "Note: ResearchHub not found at $RESEARCHHUB_DIR"
+    echo "  For cross-project features (research-junshi, method-tracker), set up ResearchHub:"
+    echo "  git clone https://github.com/mArc0v0mag1c/ResearchHub.git $RESEARCHHUB_DIR"
+    echo "  Skills will work without it, but cross-project features will be limited."
+    echo ""
+fi
+
+# ============================================================
 # Step 1: Create project directory inside ReadingProjects/
 # ============================================================
 
@@ -112,7 +138,7 @@ fi
 cd "$SCRIPT_DIR/ReadingProjects/$PROJECT_NAME"
 
 echo "Creating project directories..."
-mkdir -p Notes Extracted Literature Output
+mkdir -p Notes/Brainstorm Extracted Literature Output
 
 # Symlink Output/STYLE-GUIDE.md to config
 if [ ! -e Output/STYLE-GUIDE.md ]; then

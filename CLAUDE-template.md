@@ -8,7 +8,7 @@
 3. **`Extracted/`** — Read the relevant extracted markdown before discussing any paper.
 4. **`Notes/`** — Check for existing discussion notes; update or create new ones during discussion.
 5. **`Output/STYLE-GUIDE.md`** — LaTeX note-writing workflow and formatting rules.
-6. **`.claude/skills/`** — Available skills (mistral-pdf-to-markdown, zotero-paper-reader).
+6. **`.claude/skills/`** — Available skills (method-tracker, mistral-pdf-to-markdown, research-junshi, zotero-paper-reader).
 7. **`.claude/agents/`** — Specialized agents (note-checker).
 
 ## Working Directory Context
@@ -81,6 +81,10 @@ Guidelines:
 - Logic chains should be numbered steps with citations
 - Brainstorms and cross-paper connections are welcome — label them clearly
 
+### Notes/Brainstorm/
+
+`Notes/Brainstorm/` — auto-generated research digests from the research-junshi skill. Contains dated digest files (`YYYY-MM-DD.md`) with arXiv findings, idea connections, and brainstorm captures. These are git-tracked.
+
 ## LaTeX Output
 
 LaTeX notes live in `Output/<reading-name>/` using `\usepackage{marcoreport}`.
@@ -93,6 +97,10 @@ Compiled PDFs are gitignored but can be synced to Dropbox.
 1. Place PDF in `Literature/` (manually or via Zotero skill)
 2. Extract PDF to markdown: use `mistral-pdf-to-markdown` skill → saves to `Extracted/`
 3. Read the extracted markdown; identify key passages
+
+### Running Mistral PDF-to-Markdown
+
+See `~/.claude/CLAUDE.md` for Mistral conventions. For reading projects, output goes to `Extracted/` (not `Literature/Extracted/`).
 4. Create `Output/<reading-name>/main.tex` for structured LaTeX notes
 5. Quote relevant passages with page references
 6. Add BibTeX entry to `Output/references.bib`
@@ -121,11 +129,18 @@ Compiled PDFs are **auto-copied** to `Output/Compiled/<foldername>.pdf` on every
 
 Example: `Output/Noise/main.pdf` → `Output/Compiled/Noise.pdf` → Dropbox.
 
+## Git Hooks (auto-configured)
+
+- `pre-commit`: Scans staged files for leaked secrets (API keys, passwords, private keys) — blocks commit if found.
+- Hooks location: `.githooks/`. Configured via `git config core.hooksPath .githooks`.
+
 ## Python Environment
 
-- Uses `uv` for dependency management
-- Virtual environment located at `~/.venvs/ReadingExample`
-- Run commands with `uv run <command>` (e.g., `uv run python script.py`)
-- Add dependencies with `uv add package`
+See `~/.claude/CLAUDE.md` for Python/uv conventions. Project-specific: virtual environment at `~/.venvs/ReadingExample`.
 
-Whenever calling Python-related programs, use `uv` unless it is infeasible.
+## Skills Available
+
+- `method-tracker`: Track methods and techniques learned from readings; maintains inventory in ResearchHub (`.claude/skills/method-tracker`).
+- `mistral-pdf-to-markdown`: Convert PDFs to Markdown with Mistral OCR, including image extraction (`.claude/skills/mistral-pdf-to-markdown`).
+- `research-junshi`: Research advisor (军师) — scans arXiv/venues, reads brainstorm notes and extracted papers, generates idea digests in `Notes/Brainstorm/` (`.claude/skills/research-junshi`).
+- `zotero-paper-reader`: Read papers from Zotero library, download PDFs, convert to markdown (`.claude/skills/zotero-paper-reader`).

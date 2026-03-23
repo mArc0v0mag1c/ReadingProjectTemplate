@@ -67,8 +67,16 @@ Fill in `.env` at the repo root (shared by all projects):
 |------|-------------|
 | `mistral-pdf-to-markdown` | Converts PDFs to markdown via Mistral OCR API |
 | `zotero-paper-reader` | Fetches papers from Zotero, downloads to `Literature/`, converts to markdown |
+| `research-junshi` | Scans arXiv/venues, reads brainstorm notes and extracted papers, generates idea digests |
+| `method-tracker` | Tracks methods learned from readings, maintains inventory in ResearchHub |
 | `note-checker` agent | Validates your LaTeX notes against extracted source material |
 | LaTeX Workshop recipe | Auto-copies compiled PDFs to `Output/Compiled/` (Dropbox) on every build |
+
+### Global Claude Code Setup
+
+The first time you run `create_project.sh`, it installs `~/.claude/CLAUDE.md` — a user-level config file loaded automatically in every Claude Code session. This contains shared writing standards, workflow orchestration, and cross-project conventions. Edit the "Who I Am" section to personalize it.
+
+For full cross-project features (research-junshi digests, method tracking), set up [ResearchHub](https://github.com/mArc0v0mag1c/ResearchHub).
 
 ## Design Principles
 

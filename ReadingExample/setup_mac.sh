@@ -85,6 +85,39 @@ if [ ! -d .git ]; then
     echo "Initializing git repository..."
     git init
 
+    # Set up secret-scanning pre-commit hook
+    mkdir -p .githooks
+    cat > .githooks/pre-commit << 'HOOKEOF'
+#!/bin/sh
+#
+# pre-commit hook: scan staged files for leaked secrets
+#
+SECRETS_FOUND=0
+STAGED_ALL=$(git diff --cached --name-only --diff-filter=ACM)
+
+if [ -n "$STAGED_ALL" ]; then
+    for FILE in $STAGED_ALL; do
+        if file "$FILE" 2>/dev/null | grep -q "text"; then
+            if git show ":$FILE" 2>/dev/null | grep -qEi \
+                '(sk-[a-zA-Z0-9]{20,}|ANTHROPIC_API_KEY|OPENAI_API_KEY|MISTRAL_API_KEY|password\s*=\s*["'"'"'][^"'"'"']+|api_key\s*=\s*["'"'"'][^"'"'"']+|BEGIN (RSA |DSA |EC )?PRIVATE KEY)'; then
+                echo "WARNING: Possible secret in $FILE"
+                SECRETS_FOUND=1
+            fi
+        fi
+    done
+fi
+
+if [ $SECRETS_FOUND -ne 0 ]; then
+    echo ""
+    echo "Commit blocked: potential secrets detected in staged files."
+    echo "Review the files above. If intentional, use --no-verify (not recommended)."
+    exit 1
+fi
+HOOKEOF
+    chmod +x .githooks/pre-commit
+    git config core.hooksPath .githooks
+    echo "Installed secret-scanning pre-commit hook"
+
     # Add all files and make initial commit
     git add .
     git commit -m "Initial commit: ReadingExample reading project setup"
