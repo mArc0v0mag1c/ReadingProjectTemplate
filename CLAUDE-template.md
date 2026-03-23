@@ -41,7 +41,7 @@ ReadingProjects/ReadingExample/
 └── .vscode/         → config/.vscode (symlink: LaTeX Workshop auto-copy)
 ```
 
-**Important:** Files symlinked from `config/` are shared across all projects. Edits to these files affect every project. Per-project files (CLAUDE.md, READING-LOG.md, references.bib, pyproject.toml, setup_mac.sh) are local to this project.
+**Important:** Files symlinked from `config/` are shared across all projects. Edits to these files affect every project. Per-project files (READING-LOG.md, references.bib, pyproject.toml, setup_mac.sh) are local to each project.
 
 ## Reading Log
 

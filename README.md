@@ -89,6 +89,6 @@ For full cross-project features (research-junshi digests, method tracking), set 
 
 ## Important
 
-- Open **`ReadingProjects/`** as your VS Code workspace for day-to-day reading work — this gives Claude the root `CLAUDE.md` with shared discussion rules plus per-project `CLAUDE.md` files for project-specific details.
+- Open **`ReadingProjects/`** as your VS Code workspace for day-to-day reading work — the root `CLAUDE.md` has all reading instructions (discussion rules, note format, LaTeX conventions, skills).
 - LaTeX auto-compile and auto-copy work regardless of which level you open (paths are relative to the `.tex` file).
 - Open `ReadingProjectTemplate/` only when editing the template infrastructure (config/, create_project.sh, etc.).
