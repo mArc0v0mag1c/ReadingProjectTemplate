@@ -264,26 +264,14 @@ fi
 chmod +x setup_mac.sh
 
 # ============================================================
-# Step 6: CLAUDE.md
+# Step 6: CLAUDE.md (root-level only, no per-project CLAUDE.md)
 # ============================================================
 
-echo "Creating CLAUDE.md..."
-CLAUDE_TEMPLATE="$SCRIPT_DIR/CLAUDE-template.md"
-
-if [ -f "$CLAUDE_TEMPLATE" ]; then
-    cp "$CLAUDE_TEMPLATE" CLAUDE.md
-    sed -i '' "s/ReadingExample/$PROJECT_NAME/g" CLAUDE.md
-    if [ -n "$DRIVE_PATH" ]; then
-        sed -i '' "s/synced via cloud storage (e.g., Dropbox, Google Drive)/synced via $CLOUD_TYPE/g" CLAUDE.md
-    fi
-else
-    echo "Warning: CLAUDE template not found, skipping CLAUDE.md creation"
-fi
-
-# AGENTS.md symlink
-if [ -f "CLAUDE.md" ]; then
-    ln -sf CLAUDE.md AGENTS.md
-    echo "Created AGENTS.md -> CLAUDE.md symlink"
+# Per-project CLAUDE.md is no longer created — the root ReadingProjects/CLAUDE.md
+# covers all projects. AGENTS.md symlinks to the root CLAUDE.md for Codex compatibility.
+if [ -f "$SCRIPT_DIR/ReadingProjects/CLAUDE.md" ]; then
+    ln -sf ../CLAUDE.md AGENTS.md
+    echo "Linked AGENTS.md -> ../CLAUDE.md (root)"
 fi
 
 # ============================================================
