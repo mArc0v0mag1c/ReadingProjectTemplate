@@ -56,13 +56,27 @@ kpsewhich marcoreport.sty
 | `remarkbox[Title]` | Blue highlighted box for key insights |
 | `mynote` (tcolorbox) | Gray note box via `\begin{tcolorbox}[mynote, title=...]` |
 
+### Title Page
+
+Every note set must include author and date:
+```latex
+\title{Note Title}
+\author{Marco Zhang}
+\date{Month DD, YYYY}
+```
+
 ### Shared Bibliography
 
 All note files reference a shared BibTeX file at `Output/references.bib`:
 ```latex
-\usepackage[backend=biber]{biblatex}
+\usepackage[backend=biber,style=numeric,sorting=nyt]{biblatex}
 \addbibresource{../references.bib}
 ```
+
+- Citations render as numbered brackets: `[1]`, `[2,3]`
+- Use `\autocite{key}` for parenthetical `[1]` and `\textcite{key}` for narrative "Author [1]"
+- Place `\printbibliography` before `\end{document}`
+- Biber binary is at `~/Library/TinyTeX/bin/universal-darwin/biber` — ensure it's on PATH when compiling
 
 ## Structure & Workflow
 
@@ -122,6 +136,7 @@ V(a) = \max_{c} u(c) + \beta V(a')  \tag{Source: eq.~3, p.~8}
 - **`enumerate`** for sequential steps / numbered conditions
 - **Nested lists** to consolidate related points
 - **Boxes**: Only use `remarkbox` for now (key insights, intuition, connections). Other box types are available but should not be used unless explicitly requested.
+- **Inside remarkbox**: Add `\setlength{\parindent}{1.5em}` after `\begin{remarkbox}[...]`. Use `\medskip` between paragraphs and `\indent` at the start of each paragraph after the first.
 
 ## What NOT to Do
 
