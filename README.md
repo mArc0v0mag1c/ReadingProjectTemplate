@@ -74,9 +74,9 @@ Fill in `.env` at the repo root (shared by all projects):
 
 ### Global Claude Code Setup
 
-The first time you run `create_project.sh`, it installs `~/.claude/CLAUDE.md` — a user-level config file loaded automatically in every Claude Code session. This contains shared writing standards, workflow orchestration, and cross-project conventions. Edit the "Who I Am" section to personalize it.
+The first time you run `create_project.sh`, it installs `~/.claude/CLAUDE.md` — a user-level config file loaded automatically in every Claude Code session. This contains shared writing standards, workflow orchestration, and cross-project conventions.
 
-For full cross-project features (research-junshi digests, method tracking), set up [ResearchHub](https://github.com/mArc0v0mag1c/ResearchHub).
+For full cross-project features (research-junshi digests, method tracking) and the canonical version of the global CLAUDE.md, set up [ResearchHub](https://github.com/mArc0v0mag1c/ResearchHub). Personal identity (role, focus areas, interests) belongs in `ResearchHub/profile.md` and `ResearchHub/interests.md`, not in `CLAUDE.md`.
 
 ## Design Principles
 
